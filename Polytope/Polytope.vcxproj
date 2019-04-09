@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\glad\glad.c" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
