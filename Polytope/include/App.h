@@ -12,6 +12,7 @@ public:
 	void start();
 
 private:
+	bool init_GL();
 	bool init_GLFW();
 
 	int m_width = 720;
