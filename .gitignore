@@ -337,6 +337,7 @@ ASALocalRun/
 Polytope/data
 
 #Ignore dependency folder
+deps
 Polytope/deps
 PolytopeTools/deps
 

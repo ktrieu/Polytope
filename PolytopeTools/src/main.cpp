@@ -1,7 +1,71 @@
 #include <iostream>
+#include <fstream>
 #include <filesystem>
+#include <string>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+
+#include "Mesh.h"
 
 namespace fs = std::filesystem;
+
+fs::path get_output_path(const fs::path& output_dir, const fs::path& name) {
+	fs::path out = output_dir / name;
+	if (out.extension().string() == std::string(".blend")) {
+		return out.replace_extension(".mdl");
+	}
+	else {
+		return out;
+	}
+}
+
+void process_mdl(const fs::path& in, const fs::path& out) {
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(in.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+	if (scene == nullptr) {
+		std::cout << "Error processing " << in << "\n";
+		std::cout << "Error message: " << importer.GetErrorString() << "\n";
+		return;
+	}
+	aiMesh* ai_mesh = scene->mMeshes[0];
+	Mesh mesh;
+	for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++) {
+		aiVector3D pos = ai_mesh->mVertices[i];
+		Vertex vertex;
+		vertex.pos.x = pos.x;
+		vertex.pos.y = pos.y;
+		vertex.pos.z = pos.z;
+		mesh.vertexes.push_back(vertex);
+	}
+	for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++) {
+		aiFace ai_face = ai_mesh->mFaces[i];
+		for (unsigned int j = 0; j < ai_face.mNumIndices; j++) {
+			mesh.indexes.push_back(ai_face.mIndices[j]);
+		}
+	}
+	std::ofstream ostream(out, std::ios::binary);
+	cereal::BinaryOutputArchive archive(ostream);
+	archive(mesh);
+}
+
+void process_misc(const fs::path& in, const fs::path& out) {
+	fs::copy(in, out, fs::copy_options::overwrite_existing);
+}
+
+void process(const fs::path& in, const fs::path& out) {
+	//if the output path doesn't exist, create it
+	fs::create_directories(fs::path(out).remove_filename());
+	if (in.extension().string() == std::string(".blend")) {
+		process_mdl(in, out);
+	}
+	else {
+		process_misc(in, out);
+	}
+}
 
 int main(int argc, char** argv) {
 	fs::path input_dir;
@@ -28,15 +92,17 @@ int main(int argc, char** argv) {
 	fs::recursive_directory_iterator resource_iter(input_dir);
 	for (fs::path resource_in : resource_iter) {
 		fs::path resource_name = resource_in.lexically_relative(input_dir);
-		fs::path resource_out = output_dir / resource_name;
-		//if the output doesn't exist or if the input was modified after the output file
+		fs::path resource_out = get_output_path(output_dir, resource_name);
+		if (!fs::is_regular_file(resource_in)) {
+			//we only want to process files
+			continue;
+		}
 		if (!fs::is_regular_file(resource_out) || fs::last_write_time(resource_in) > fs::last_write_time(resource_out)) {
-			//copy the file
 			std::cout << "Processing " << resource_name << "\n";
-			fs::copy_file(resource_in, resource_out, fs::copy_options::overwrite_existing);
-		} 
+			process(resource_in, resource_out);
+		}
 		else {
-			std::cout << "Skipping resource " << resource_name << "\n";
+			std::cout << "Skipping " << resource_name << "\n";
 		}
 	}
 	return 0;
