@@ -29,7 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\App.h">
+    <ClInclude Include="include\polytope\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

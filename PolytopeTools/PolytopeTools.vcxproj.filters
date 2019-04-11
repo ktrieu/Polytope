@@ -20,10 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Mesh.h">
+    <ClInclude Include="include\polytope_tools\cereal_glm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\cereal_glm.h">
+    <ClInclude Include="include\polytope_tools\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
