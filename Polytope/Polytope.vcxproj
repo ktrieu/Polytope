@@ -78,11 +78,11 @@
     </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)deps/include;$(ProjectDir)include/polytope;$(ProjectDir)deps/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/src;$(SolutionDir)/PolytopeTools/include;$(SolutionDir)deps/include;$(ProjectDir)include/polytope;$(ProjectDir)deps/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)deps/lib/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)deps/include;$(ProjectDir)include/polytope;$(ProjectDir)deps/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/src;$(SolutionDir)/PolytopeTools/include;$(SolutionDir)deps/include;$(ProjectDir)include/polytope;$(ProjectDir)deps/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)deps/lib/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -175,12 +175,14 @@
     <Text Include="resource\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\render\MeshBuffer.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\glad\glad.c" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope\App.h" />
+    <ClInclude Include="src\render\MeshBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

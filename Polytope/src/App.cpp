@@ -1,9 +1,15 @@
 #include "App.h"
 
 #include <iostream>
+#include <fstream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <cereal/archives/binary.hpp>
+
+#include <polytope_tools/Mesh.h>
+
+#include "render/MeshBuffer.h"
 
 bool App::init_GL() {
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == false) {
@@ -41,6 +47,15 @@ bool App::init() {
 }
 
 void App::start() {
+	//just load it here for now
+	std::ifstream file("data/mesh/suzanne.mdl", std::ios::binary);
+	cereal::BinaryInputArchive archive(file);
+	Mesh mesh;
+	archive(mesh);
+	MeshBuffer mesh_buffer;
+	std::vector<Mesh> meshes = { mesh };
+	mesh_buffer.upload_meshes(meshes);
+	std::cout << glGetError() << "\n";
 	while (!glfwWindowShouldClose(m_wnd)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwPollEvents();
