@@ -23,7 +23,7 @@ fs::path get_output_path(const fs::path& output_dir, const fs::path& name) {
 	}
 }
 
-void process_mdl(const fs::path& in, const fs::path& out) {
+void process_mdl(const fs::path& in, const fs::path& out, const std::string& name) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(in.string(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 	if (scene == nullptr) {
@@ -33,6 +33,7 @@ void process_mdl(const fs::path& in, const fs::path& out) {
 	}
 	aiMesh* ai_mesh = scene->mMeshes[0];
 	Mesh mesh;
+	mesh.name = name;
 	for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++) {
 		aiVector3D pos = ai_mesh->mVertices[i];
 		Vertex vertex;
@@ -56,11 +57,11 @@ void process_misc(const fs::path& in, const fs::path& out) {
 	fs::copy(in, out, fs::copy_options::overwrite_existing);
 }
 
-void process(const fs::path& in, const fs::path& out) {
+void process(const fs::path& in, const fs::path& out, const std::string& name) {
 	//if the output path doesn't exist, create it
 	fs::create_directories(fs::path(out).remove_filename());
 	if (in.extension().string() == std::string(".blend")) {
-		process_mdl(in, out);
+		process_mdl(in, out, name);
 	}
 	else {
 		process_misc(in, out);
@@ -99,7 +100,7 @@ int main(int argc, char** argv) {
 		}
 		if (!fs::is_regular_file(resource_out) || fs::last_write_time(resource_in) > fs::last_write_time(resource_out)) {
 			std::cout << "Processing " << resource_name << "\n";
-			process(resource_in, resource_out);
+			process(resource_in, resource_out, resource_name.string());
 		}
 		else {
 			std::cout << "Skipping " << resource_name << "\n";
