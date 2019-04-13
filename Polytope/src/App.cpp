@@ -10,6 +10,7 @@
 #include <polytope_tools/Mesh.h>
 
 #include "render/MeshBuffer.h"
+#include "render/ShaderProgram.h"
 
 bool App::init_GL() {
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == false) {
@@ -55,7 +56,15 @@ void App::start() {
 	MeshBuffer mesh_buffer;
 	std::vector<Mesh> meshes = { mesh };
 	mesh_buffer.upload_meshes(meshes);
-	std::cout << glGetError() << "\n";
+	//load the shader
+	std::ifstream vert_file("data/shader/basic.vert");
+	std::ifstream frag_file("data/shader/basic.frag");
+	std::stringstream vert_stream;
+	vert_stream << vert_file.rdbuf();
+	std::stringstream frag_stream;
+	frag_stream << frag_file.rdbuf();
+	ShaderProgram program(vert_stream.str(), frag_stream.str());
+	program.use();
 	while (!glfwWindowShouldClose(m_wnd)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwPollEvents();

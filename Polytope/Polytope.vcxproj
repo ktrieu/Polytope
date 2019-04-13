@@ -175,6 +175,7 @@
     <Text Include="resource\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\render\ShaderProgram.cpp" />
     <ClCompile Include="src\render\MeshBuffer.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\glad\glad.c" />
@@ -182,7 +183,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope\App.h" />
+    <ClInclude Include="src\render\ShaderProgram.h" />
     <ClInclude Include="src\render\MeshBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\shader\basic.frag" />
+    <None Include="resource\shader\basic.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
