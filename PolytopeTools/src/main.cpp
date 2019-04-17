@@ -36,10 +36,14 @@ void process_mdl(const fs::path& in, const fs::path& out, const std::string& nam
 	mesh.name = name;
 	for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++) {
 		aiVector3D pos = ai_mesh->mVertices[i];
+		aiVector3D normal = ai_mesh->mNormals[i];
 		Vertex vertex;
 		vertex.pos.x = pos.x;
 		vertex.pos.y = pos.y;
 		vertex.pos.z = pos.z;
+		vertex.normal.x = normal.x;
+		vertex.normal.y = normal.y;
+		vertex.normal.z = normal.z;
 		mesh.vertexes.push_back(vertex);
 	}
 	for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++) {

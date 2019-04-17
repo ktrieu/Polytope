@@ -10,10 +10,11 @@
 
 struct Vertex {
 	glm::vec3 pos;
+	glm::vec3 normal;
 
 	template<class Archive>
 	void serialize(Archive& archive) {
-		archive(pos);
+		archive(pos, normal);
 	}
 };
 
