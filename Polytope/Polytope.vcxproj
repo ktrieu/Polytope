@@ -118,6 +118,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,6 +164,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -175,6 +177,8 @@
     <Text Include="resource\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\resource\MeshLoader.cpp" />
+    <ClCompile Include="src\resource\ShaderLoader.cpp" />
     <ClCompile Include="src\render\ShaderProgram.cpp" />
     <ClCompile Include="src\render\MeshBuffer.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -183,6 +187,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope\App.h" />
+    <ClInclude Include="src\resource\MeshLoader.h" />
+    <ClInclude Include="src\resource\ShaderLoader.h" />
     <ClInclude Include="src\render\ShaderProgram.h" />
     <ClInclude Include="src\render\MeshBuffer.h" />
   </ItemGroup>

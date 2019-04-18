@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <GLFW/glfw3.h>
 
 #include "App.h"
 

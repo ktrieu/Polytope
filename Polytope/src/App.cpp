@@ -48,23 +48,8 @@ bool App::init() {
 }
 
 void App::start() {
-	//just load it here for now
-	std::ifstream file("data/mesh/suzanne.mdl", std::ios::binary);
-	cereal::BinaryInputArchive archive(file);
-	Mesh mesh;
-	archive(mesh);
-	MeshBuffer mesh_buffer;
-	std::vector<Mesh> meshes = { mesh };
-	mesh_buffer.upload_meshes(meshes);
-	//load the shader
-	std::ifstream vert_file("data/shader/basic.vert");
-	std::ifstream frag_file("data/shader/basic.frag");
-	std::stringstream vert_stream;
-	vert_stream << vert_file.rdbuf();
-	std::stringstream frag_stream;
-	frag_stream << frag_file.rdbuf();
-	ShaderProgram program(vert_stream.str(), frag_stream.str());
-	program.use();
+	m_shader_loader.load_from_directory("data/shader/");
+	m_mesh_loader.load_from_directory("data/mesh/");
 	while (!glfwWindowShouldClose(m_wnd)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwPollEvents();
