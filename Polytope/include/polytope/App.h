@@ -1,7 +1,6 @@
 #pragma once
 
-#include <resource/ShaderLoader.h>
-#include <resource/MeshLoader.h>
+#include <resource/ResourceLoader.h>
 
 struct GLFWwindow;
 
@@ -22,8 +21,7 @@ private:
 	int m_height = 480;
 	GLFWwindow* m_wnd = nullptr;
 
-	ShaderLoader m_shader_loader;
-	MeshLoader m_mesh_loader;
+	ResourceLoader m_resource_loader;
 
 };
 

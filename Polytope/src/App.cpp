@@ -48,8 +48,8 @@ bool App::init() {
 }
 
 void App::start() {
-	m_shader_loader.load_from_directory("data/shader/");
-	m_mesh_loader.load_from_directory("data/mesh/");
+	m_resource_loader.load_from_subdirectory("mesh/");
+	m_resource_loader.load_from_subdirectory("shader/");
 	while (!glfwWindowShouldClose(m_wnd)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwPollEvents();
@@ -57,7 +57,7 @@ void App::start() {
 	}
 }
 
-App::App() {
+App::App() : m_resource_loader("data/") {
 }
 
 App::~App() {
