@@ -19,6 +19,10 @@ void ShaderProgram::use() {
 	glUseProgram(m_program);
 }
 
+void ShaderProgram::unuse() {
+	glUseProgram(0);
+}
+
 GLuint ShaderProgram::compile_shader(const std::string& code, GLenum shader_type) {
 	GLuint shader_id = glCreateShader(shader_type);
 	//unfortunately glShaderSource wants arrays of string and lengths, so we have to do some gymnastics

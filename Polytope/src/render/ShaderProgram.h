@@ -10,6 +10,7 @@ public:
 	~ShaderProgram();
 
 	void use();
+	void unuse();
 
 private:
 	GLuint compile_shader(const std::string& code, GLenum shader_type);
