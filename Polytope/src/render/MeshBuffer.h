@@ -21,6 +21,9 @@ public:
 
 	void upload_meshes(const std::vector<Mesh>& meshes);
 
+	void bind();
+	void unbind();
+
 private:
 	GLuint m_vbo = 0;
 	GLuint m_ibo = 0;

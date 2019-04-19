@@ -13,6 +13,16 @@ MeshBuffer::~MeshBuffer(){
 	glDeleteBuffers(1, &m_ibo);
 }
 
+void MeshBuffer::bind() {
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+}
+
+void MeshBuffer::unbind() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void MeshBuffer::upload_meshes(const std::vector<Mesh>& meshes) {
 	int num_vertexes = 0;
 	int num_indexes = 0;
