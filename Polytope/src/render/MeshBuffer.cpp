@@ -47,8 +47,8 @@ void MeshBuffer::upload_meshes(const std::vector<Mesh>& meshes) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * num_indexes, nullptr, GL_STATIC_DRAW);
 	for (const Mesh& mesh : meshes) {
 		MeshOffset& offset = m_offsets[mesh.name];
-		glBufferSubData(GL_ARRAY_BUFFER, sizeof(unsigned short) * offset.index_offset, 
-			sizeof(unsigned short) * offset.index_len, mesh.vertexes.data());
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * offset.index_offset,
+			sizeof(unsigned short) * offset.index_len, mesh.indexes.data());
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
