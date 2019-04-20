@@ -3,6 +3,8 @@
 #include <vector>
 #include <stdexcept>
 
+#include <glm/gtc/type_ptr.hpp>
+
 ShaderProgram::ShaderProgram(const std::string& vertex_code, const std::string& frag_code) {
 	m_vert_shader = compile_shader(vertex_code, GL_VERTEX_SHADER);
 	m_frag_shader = compile_shader(frag_code, GL_FRAGMENT_SHADER);
@@ -17,10 +19,26 @@ ShaderProgram::~ShaderProgram() {
 
 void ShaderProgram::use() {
 	glUseProgram(m_program);
+	m_active = true;
 }
 
 void ShaderProgram::unuse() {
 	glUseProgram(0);
+	m_active = false;
+}
+
+void ShaderProgram::uploadUniform(const glm::mat4& mat, const std::string& name) {
+	if (!m_active) {
+		throw std::runtime_error("Cannot upload uniform to non-active shader program.");
+	}
+	//we can cache uniform locations later, but just grab it for now
+	GLint location = glGetUniformLocation(m_program, name.c_str());
+	if (location != -1) {
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+	}
+	else {
+		throw std::invalid_argument("Uniform " + name + " not found.");
+	}
 }
 
 GLuint ShaderProgram::compile_shader(const std::string& code, GLenum shader_type) {
