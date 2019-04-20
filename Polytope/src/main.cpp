@@ -9,5 +9,11 @@ int main(int argc, char** argv) {
 	if (app.init() == false) {
 		return 0;
 	}
-	app.start();
+	try {
+		app.start();
+	}
+	catch (std::exception& e) {
+		std::cout << "EXCEPTION:\n";
+		std::cout << e.what() << '\n';
+	}
 }
