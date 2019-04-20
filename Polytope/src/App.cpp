@@ -28,6 +28,7 @@ bool App::init_GLFW() {
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	m_wnd = glfwCreateWindow(m_width, m_height, "Polytope", NULL, NULL);
 	if (m_wnd == nullptr) {
 		std::cout << "Window creation failed.\n";
