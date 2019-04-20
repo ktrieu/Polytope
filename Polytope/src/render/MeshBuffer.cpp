@@ -53,3 +53,16 @@ void MeshBuffer::upload_meshes(const std::vector<Mesh>& meshes) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+MeshOffset MeshBuffer::get_mesh_offset(const std::string& name) {
+	auto result = m_offsets.find(name);
+	if (result != m_offsets.end()) {
+		return (*result).second;
+	}
+	else {
+		throw std::invalid_argument("Mesh offset " + name + " not found.");
+	}
+	
+}
+
+

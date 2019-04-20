@@ -177,6 +177,8 @@
     <Text Include="resource\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\world\Entity.cpp" />
+    <ClCompile Include="src\render\EntityRenderer.cpp" />
     <ClCompile Include="src\resource\ResourceLoader.cpp" />
     <ClCompile Include="src\render\ShaderProgram.cpp" />
     <ClCompile Include="src\render\MeshBuffer.cpp" />
@@ -185,6 +187,8 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\world\Entity.h" />
+    <ClInclude Include="src\render\EntityRenderer.h" />
     <ClInclude Include="include\polytope\App.h" />
     <ClInclude Include="src\resource\ResourceLoader.h" />
     <ClInclude Include="src\render\ShaderProgram.h" />

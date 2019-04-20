@@ -20,6 +20,7 @@ public:
 	~MeshBuffer();
 
 	void upload_meshes(const std::vector<Mesh>& meshes);
+	MeshOffset get_mesh_offset(const std::string& name);
 
 	void bind();
 	void unbind();
