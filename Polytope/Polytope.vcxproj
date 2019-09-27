@@ -185,6 +185,7 @@
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\glad\glad.c" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\world\Entity.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="src\resource\ResourceLoader.h" />
     <ClInclude Include="src\render\ShaderProgram.h" />
     <ClInclude Include="src\render\MeshBuffer.h" />
+    <ClInclude Include="src\world\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shader\basic.frag" />
