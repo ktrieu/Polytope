@@ -14,9 +14,9 @@ World::~World() {
 void World::load(ResourceLoader& loader) {
 	loader.load_from_subdirectory("mesh/");
 	loader.load_from_subdirectory("shader/");
-	ShaderProgram& basic_shader = loader.get_shader("shader\\basic");
+	ShaderProgram& basic_shader = loader.get_shader("shader/basic");
 	m_renderer.load_shader(basic_shader);
-	Mesh& suzanne = loader.get_mesh("mesh\\suzanne");
+	Mesh& suzanne = loader.get_mesh("mesh/suzanne");
 	std::vector<Mesh> meshes = { suzanne };
 	m_renderer.upload_meshes(meshes);
 	m_entities.emplace_back(suzanne, glm::vec3(0.0f, 0.0f, -4.0f));

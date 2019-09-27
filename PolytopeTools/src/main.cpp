@@ -103,8 +103,8 @@ int main(int argc, char** argv) {
 			continue;
 		}
 		if (!fs::is_regular_file(resource_out) || fs::last_write_time(resource_in) > fs::last_write_time(resource_out)) {
-			std::cout << "Processing " << resource_name << "\n";
-			process(resource_in, resource_out, resource_name.replace_extension().string());
+			std::cout << "Processing " << resource_name.generic_string() << "\n";
+			process(resource_in, resource_out, resource_name.replace_extension().generic_string());
 		}
 		else {
 			std::cout << "Skipping " << resource_name << "\n";

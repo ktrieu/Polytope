@@ -39,7 +39,7 @@ ShaderProgram& ResourceLoader::get_shader(const std::string& name) {
 void ResourceLoader::load_from_subdirectory(const std::string& dir) {
 	fs::recursive_directory_iterator dir_iter(m_root_folder / dir);
 	for (fs::path file : dir_iter) {
-		std::string name = file.lexically_relative(m_root_folder).replace_extension().string();
+		std::string name = file.lexically_relative(m_root_folder).replace_extension().generic_string();
 		if (file.extension() == ".vert" || file.extension() == ".frag") {
 			load_shader(file, name);
 		}
