@@ -4,13 +4,16 @@
 
 #include <polytope_tools/Mesh.h>
 
-EntityRenderer::EntityRenderer(ShaderProgram& shader) : m_shader(shader) {
-	m_vao = init_vao();
+EntityRenderer::EntityRenderer() {
 }
-
 
 EntityRenderer::~EntityRenderer() {
 	glDeleteVertexArrays(1, &m_vao);
+}
+
+void EntityRenderer::load_shader(ShaderProgram& shader) {
+	m_shader = &shader;
+	m_vao = init_vao();
 }
 
 void EntityRenderer::upload_meshes(std::vector<Mesh>& meshes) {
@@ -23,18 +26,21 @@ void EntityRenderer::draw_entity(const Entity& entity) {
 }
 
 void EntityRenderer::render() {
+	if (m_shader == nullptr) {
+		throw std::runtime_error("No shader is loaded. Call load_shader()");
+	}
 	//just generate a standard projection matrix for now
 	glm::mat4 perspective = glm::perspective(glm::radians(60.0f), 720.0f / 480.0f, 0.01f, 100.0f);
-	m_shader.use();
+	m_shader->use();
 	glBindVertexArray(m_vao);
 	for (DrawCall& call : m_draw_calls) {
 		glm::mat4 mvp = perspective * call.transform;
-		m_shader.uploadUniform(mvp, "mvp");
+		m_shader->uploadUniform(mvp, "mvp");
 		glDrawElementsBaseVertex(GL_TRIANGLES, call.offset.index_len, GL_UNSIGNED_SHORT,
 			(void*)(call.offset.index_offset * sizeof(unsigned short)), call.offset.base_vertex);
 	}
 	glBindVertexArray(0);
-	m_shader.unuse();
+	m_shader->unuse();
 	m_draw_calls.clear();
 }
 

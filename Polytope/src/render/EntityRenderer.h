@@ -17,9 +17,10 @@ struct DrawCall {
 class EntityRenderer {
 
 public:
-	EntityRenderer(ShaderProgram& shader);
+	EntityRenderer();
 	~EntityRenderer();
 
+	void load_shader(ShaderProgram& shader);
 	void upload_meshes(std::vector<Mesh>& meshes);
 
 	void draw_entity(const Entity& entity);
@@ -31,7 +32,7 @@ private:
 	GLuint m_vao = 0;
 	MeshBuffer m_meshes;
 	//for now just have it as a class var, we'll deal with materials later
-	ShaderProgram& m_shader;
+	ShaderProgram* m_shader = nullptr;
 	std::vector<DrawCall> m_draw_calls;
 
 };

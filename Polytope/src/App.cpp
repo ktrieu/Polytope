@@ -53,7 +53,9 @@ bool App::init() {
 void App::start() {
 	m_resource_loader.load_from_subdirectory("mesh/");
 	m_resource_loader.load_from_subdirectory("shader/");
-	EntityRenderer renderer(m_resource_loader.get_shader("shader\\basic"));
+	EntityRenderer renderer;
+	ShaderProgram& basic_shader = m_resource_loader.get_shader("shader\\basic");
+	renderer.load_shader(basic_shader);
 	std::vector<Mesh> meshes = { m_resource_loader.get_mesh("mesh\\suzanne") };
 	renderer.upload_meshes(meshes);
 	std::vector<Entity> entities;
