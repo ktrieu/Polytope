@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <polytope_tools/Mesh.h>
+#include <render/Camera.h>
 
 EntityRenderer::EntityRenderer() {
 }
@@ -25,17 +26,19 @@ void EntityRenderer::draw_entity(const Entity& entity) {
 	m_draw_calls.push_back(DrawCall{ offset, entity.get_transform() });
 }
 
-void EntityRenderer::render() {
+void EntityRenderer::render(Camera& camera) {
 	if (m_shader == nullptr) {
 		throw std::runtime_error("No shader is loaded. Call load_shader()");
 	}
-	//just generate a standard projection matrix for now
-	glm::mat4 perspective = glm::perspective(glm::radians(60.0f), 720.0f / 480.0f, 0.01f, 100.0f);
 	m_shader->use();
 	glBindVertexArray(m_vao);
+	glm::mat4 view = camera.get_view();
+	glm::mat4 proj = camera.get_proj();
+	m_shader->uploadUniform(view, "view");
+	m_shader->uploadUniform(proj, "projection");
 	for (DrawCall& call : m_draw_calls) {
-		glm::mat4 mvp = perspective * call.transform;
-		m_shader->uploadUniform(mvp, "mvp");
+		glm::mat4 model = call.transform;
+		m_shader->uploadUniform(model, "model");
 		glDrawElementsBaseVertex(GL_TRIANGLES, call.offset.index_len, GL_UNSIGNED_SHORT,
 			(void*)(call.offset.index_offset * sizeof(unsigned short)), call.offset.base_vertex);
 	}

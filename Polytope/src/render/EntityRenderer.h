@@ -8,6 +8,7 @@
 #include "MeshBuffer.h"
 #include "ShaderProgram.h"
 #include <world/Entity.h>
+#include <render/Camera.h>
 
 struct DrawCall {
 	MeshOffset offset;
@@ -24,7 +25,7 @@ public:
 	void upload_meshes(std::vector<Mesh>& meshes);
 
 	void draw_entity(const Entity& entity);
-	void render();
+	void render(Camera& camera);
 
 private:
 	GLuint init_vao();

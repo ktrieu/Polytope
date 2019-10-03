@@ -3,14 +3,16 @@
 layout(location = 0) in vec3 pos;
 layout(location = 1) in vec3 normal;
 
-uniform mat4 mvp;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
-layout(location = 0) out vec3 frag_pos;
-layout(location = 1) out vec3 frag_normal;
+layout(location = 0) out vec3 pos_view_space;
+layout(location = 1) out vec3 normal_view_space;
 
 void main() {
-	vec4 transformed_pos = mvp * vec4(pos, 1.0);
-	frag_pos = transformed_pos.xyz;
-	frag_normal = normal;
-	gl_Position = transformed_pos;
+	mat4 mv = view * model;
+	pos_view_space = (mv * vec4(pos, 1.0)).xyz;
+	normal_view_space = (mv * vec4(normal, 0.0)).xyz;
+	gl_Position = projection * vec4(pos_view_space, 1.0);
 }

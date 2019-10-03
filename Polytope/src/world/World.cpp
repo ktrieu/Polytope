@@ -19,10 +19,11 @@ void World::load(ResourceLoader& loader) {
 	Mesh& suzanne = loader.get_mesh("mesh/suzanne");
 	std::vector<Mesh> meshes = { suzanne };
 	m_renderer.upload_meshes(meshes);
-	m_entities.emplace_back(suzanne, glm::vec3(0.0f, 0.0f, -4.0f));
+	m_entities.emplace_back(suzanne, glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
 void World::update() {
+	m_camera.update();
 	for (Entity& entity : m_entities) {
 		entity.update();
 		m_renderer.draw_entity(entity);
@@ -30,5 +31,5 @@ void World::update() {
 }
 
 void World::render() {
-	m_renderer.render();
+	m_renderer.render(m_camera);
 }
