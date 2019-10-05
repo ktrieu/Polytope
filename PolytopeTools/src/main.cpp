@@ -44,6 +44,11 @@ void process_mdl(const fs::path& in, const fs::path& out, const std::string& nam
 		vertex.normal.x = normal.x;
 		vertex.normal.y = normal.y;
 		vertex.normal.z = normal.z;
+		if (ai_mesh->HasTextureCoords(0)) {
+			aiVector3D uv = ai_mesh->mTextureCoords[0][i];
+			vertex.uv.x = uv.x;
+			vertex.uv.y = uv.y;
+		}
 		mesh.vertexes.push_back(vertex);
 	}
 	for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++) {
