@@ -87,6 +87,7 @@ int main(int argc, char** argv) {
 	else {
 		std::cout << "Invalid number of arguments.\n";
 		std::cout << "Usage: PolyTopeTools inputDir outputDir\n";
+		return 1;
 	}
 	std::cout << "PolytopeTools:\n";
 	std::cout << "Writing resources to " << output_dir << "\n";
