@@ -2,6 +2,7 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <future>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -10,6 +11,7 @@
 #include <cereal/archives/binary.hpp>
 
 #include "Mesh.h"
+#include "FileSystemWatcher.h"
 
 namespace fs = std::filesystem;
 
@@ -77,6 +79,34 @@ void process(const fs::path& in, const fs::path& out, const std::string& name) {
 	}
 }
 
+void process_directory(fs::path input_dir, fs::path output_dir) {
+	fs::recursive_directory_iterator resource_iter(input_dir);
+	for (fs::path resource_in : resource_iter) {
+		fs::path resource_name = resource_in.lexically_relative(input_dir);
+		fs::path resource_out = get_output_path(output_dir, resource_name);
+		if (!fs::is_regular_file(resource_in)) {
+			//we only want to process files
+			continue;
+		}
+		if (resource_in.extension().string().back() == '~') {
+			// don't process Visual Studio temp files
+			continue;
+		}
+		if (!fs::is_regular_file(resource_out) || fs::last_write_time(resource_in) > fs::last_write_time(resource_out)) {
+			std::cout << "Processing " << resource_name.generic_string() << "\n";
+			process(resource_in, resource_out, resource_name.replace_extension().generic_string());
+		}
+	}
+}
+
+static void wait_for_input() {
+	char c;
+	std::cin.get(c);
+	return;
+}
+
+const int WAIT_TIMEOUT_MS = 100;
+
 int main(int argc, char** argv) {
 	fs::path input_dir;
 	fs::path output_dir;
@@ -100,21 +130,22 @@ int main(int argc, char** argv) {
 			return 0;
 		}
 	}
-	fs::recursive_directory_iterator resource_iter(input_dir);
-	for (fs::path resource_in : resource_iter) {
-		fs::path resource_name = resource_in.lexically_relative(input_dir);
-		fs::path resource_out = get_output_path(output_dir, resource_name);
-		if (!fs::is_regular_file(resource_in)) {
-			//we only want to process files
-			continue;
-		}
-		if (!fs::is_regular_file(resource_out) || fs::last_write_time(resource_in) > fs::last_write_time(resource_out)) {
-			std::cout << "Processing " << resource_name.generic_string() << "\n";
-			process(resource_in, resource_out, resource_name.replace_extension().generic_string());
-		}
-		else {
-			std::cout << "Skipping " << resource_name << "\n";
+
+	FileSystemWatcher watcher(fs::absolute(input_dir).string());
+	auto future = std::async(wait_for_input);
+
+	process_directory(input_dir, output_dir);
+
+	std::cout << "Watching for changes...\n";
+	std::cout << "Press <ENTER> to exit.\n";
+
+	while (future.wait_for(std::chrono::milliseconds(std::chrono::milliseconds(0))) != std::future_status::ready) {
+		if (watcher.check_changes()) {
+			process_directory(input_dir, output_dir);
+			std::cout << "Watching for changes...\n";
+			std::cout << "Press <ENTER> to exit.\n";
 		}
 	}
+	
 	return 0;
 }

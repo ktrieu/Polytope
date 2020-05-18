@@ -161,10 +161,12 @@ exit 0</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\FileSystemWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope_tools\cereal_glm.h" />
     <ClInclude Include="include\polytope_tools\Mesh.h" />
+    <ClInclude Include="src\FileSystemWatcher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

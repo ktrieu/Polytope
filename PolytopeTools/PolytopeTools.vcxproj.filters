@@ -18,12 +18,18 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\FileSystemWatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope_tools\cereal_glm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\polytope_tools\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileSystemWatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
