@@ -54,7 +54,7 @@ void App::start() {
 	while (!glfwWindowShouldClose(m_wnd)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.update();
-		world.render();
+		world.render(m_resource_loader);
 		glfwPollEvents();
 		glfwSwapBuffers(m_wnd);
 	}

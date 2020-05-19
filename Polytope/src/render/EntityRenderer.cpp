@@ -4,17 +4,14 @@
 
 #include <polytope_tools/Mesh.h>
 #include <render/Camera.h>
+#include <resource/ResourceLoader.h>
 
 EntityRenderer::EntityRenderer() {
+	m_vao = init_vao();
 }
 
 EntityRenderer::~EntityRenderer() {
 	glDeleteVertexArrays(1, &m_vao);
-}
-
-void EntityRenderer::load_shader(ShaderProgram& shader) {
-	m_shader = &shader;
-	m_vao = init_vao();
 }
 
 void EntityRenderer::upload_meshes(std::vector<Mesh>& meshes) {
@@ -23,27 +20,25 @@ void EntityRenderer::upload_meshes(std::vector<Mesh>& meshes) {
 
 void EntityRenderer::draw_entity(const Entity& entity) {
 	MeshOffset offset = m_meshes.get_mesh_offset(entity.get_mesh());
-	m_draw_calls.push_back(DrawCall{ offset, entity.get_transform() });
+	m_draw_calls.push_back(DrawCall{ offset, entity.get_material(), entity.get_transform() });
 }
 
-void EntityRenderer::render(Camera& camera) {
-	if (m_shader == nullptr) {
-		throw std::runtime_error("No shader is loaded. Call load_shader()");
-	}
-	m_shader->use();
+void EntityRenderer::render(Camera& camera, ResourceLoader& loader) {
 	glBindVertexArray(m_vao);
 	glm::mat4 view = camera.get_view();
 	glm::mat4 proj = camera.get_proj();
-	m_shader->uploadUniform(view, "view");
-	m_shader->uploadUniform(proj, "projection");
 	for (DrawCall& call : m_draw_calls) {
+		Material& mat = loader.get_material(call.material);
+		ShaderProgram& shader = loader.get_shader(mat.shader_name);
+		shader.use();
 		glm::mat4 model = call.transform;
-		m_shader->uploadUniform(model, "model");
+		shader.uploadUniform(model, "model");
+		shader.uploadUniform(view, "view");
+		shader.uploadUniform(proj, "projection");
 		glDrawElementsBaseVertex(GL_TRIANGLES, call.offset.index_len, GL_UNSIGNED_SHORT,
 			(void*)(call.offset.index_offset * sizeof(unsigned short)), call.offset.base_vertex);
 	}
 	glBindVertexArray(0);
-	m_shader->unuse();
 	m_draw_calls.clear();
 }
 

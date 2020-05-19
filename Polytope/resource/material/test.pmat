@@ -1,5 +1,5 @@
 texture = no_texture
-shader = basic
+shader = shader/basic
 
 # comments can exist
 float ambient_fac = 0.1

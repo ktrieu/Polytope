@@ -18,7 +18,7 @@ public:
 	void load(ResourceLoader& loader);
 
 	void update();
-	void render();
+	void render(ResourceLoader& loader);
 
 private:
 	App& m_app;

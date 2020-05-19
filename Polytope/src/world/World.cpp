@@ -16,8 +16,6 @@ void World::load(ResourceLoader& loader) {
 	loader.load_from_subdirectory("shader/");
 	loader.load_from_subdirectory("texture/");
 	loader.load_from_subdirectory("material/");
-	ShaderProgram& basic_shader = loader.get_shader("shader/basic");
-	m_renderer.load_shader(basic_shader);
 	Mesh& suzanne = loader.get_mesh("mesh/suzanne");
 	std::vector<Mesh> meshes = { suzanne };
 	m_renderer.upload_meshes(meshes);
@@ -32,6 +30,6 @@ void World::update() {
 	}
 }
 
-void World::render() {
-	m_renderer.render(m_camera);
+void World::render(ResourceLoader& loader) {
+	m_renderer.render(m_camera, loader);
 }
