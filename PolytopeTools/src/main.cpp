@@ -127,7 +127,7 @@ void process_directory(fs::path input_dir, fs::path output_dir) {
 			//we only want to process files
 			continue;
 		}
-		if (!(GetFileAttributes(resource_in.string().c_str()) & FILE_ATTRIBUTE_HIDDEN)) {
+		if (resource_in.extension().string().back() == '~') {
 			// don't process Visual Studio temp files
 			continue;
 		}
