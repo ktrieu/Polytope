@@ -14,5 +14,5 @@ Entity::~Entity() {
 
 void Entity::update() {
 	//every entity must spin
-	m_transform = glm::rotate(m_transform, 0.001f, glm::vec3(0.0f, 0.0f, 1.0f));
+	m_transform = glm::rotate(m_transform, -0.0001f, glm::vec3(0.0f, 0.0f, 1.0f));
 }

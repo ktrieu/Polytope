@@ -11,6 +11,8 @@
 #include <cereal/archives/binary.hpp>
 
 #include "Mesh.h"
+#include "Material.h"
+#include "mat_parse.h"
 #include "FileSystemWatcher.h"
 
 namespace fs = std::filesystem;
@@ -64,6 +66,15 @@ void process_mdl(const fs::path& in, const fs::path& out, const std::string& nam
 	archive(mesh);
 }
 
+void process_mat(const fs::path& in, const fs::path& out, const std::string& name) {
+	std::ifstream file(in);
+	Material mat = parse_material_file(file);
+	mat.name = name;
+	std::ofstream out_file(out, std::ios::binary);
+	cereal::BinaryOutputArchive archive(out_file);
+	archive(mat);
+}
+
 void process_misc(const fs::path& in, const fs::path& out) {
 	fs::copy(in, out, fs::copy_options::overwrite_existing);
 }
@@ -73,6 +84,9 @@ void process(const fs::path& in, const fs::path& out, const std::string& name) {
 	fs::create_directories(fs::path(out).remove_filename());
 	if (in.extension().string() == std::string(".blend")) {
 		process_mdl(in, out, name);
+	}
+	if (in.extension().string() == std::string(".pmat")) {
+		process_mat(in, out, name);
 	}
 	else {
 		process_misc(in, out);

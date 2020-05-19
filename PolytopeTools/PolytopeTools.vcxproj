@@ -162,9 +162,12 @@ exit 0</Command>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\FileSystemWatcher.cpp" />
+    <ClCompile Include="src\mat_parse.cpp" />
+    <ClCompile Include="src\mat_parse.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope_tools\cereal_glm.h" />
+    <ClInclude Include="include\polytope_tools\Material.h" />
     <ClInclude Include="include\polytope_tools\Mesh.h" />
     <ClInclude Include="src\FileSystemWatcher.h" />
   </ItemGroup>

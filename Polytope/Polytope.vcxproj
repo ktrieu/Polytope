@@ -199,6 +199,7 @@
     <ClInclude Include="src\world\World.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resource\material\test.pmat" />
     <None Include="resource\shader\basic.frag" />
     <None Include="resource\shader\basic.vert" />
   </ItemGroup>
