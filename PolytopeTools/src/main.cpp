@@ -9,9 +9,12 @@
 #include <assimp/postprocess.h>
 #include <cereal/cereal.hpp>
 #include <cereal/archives/binary.hpp>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 #include "Mesh.h"
 #include "Material.h"
+#include "Texture.h"
 #include "mat_parse.h"
 #include "FileSystemWatcher.h"
 
@@ -21,6 +24,9 @@ fs::path get_output_path(const fs::path& output_dir, const fs::path& name) {
 	fs::path out = output_dir / name;
 	if (out.extension().string() == std::string(".blend")) {
 		return out.replace_extension(".mdl");
+	}
+	if (out.extension().string() == std::string(".png")) {
+		return out.replace_extension(".tex");
 	}
 	else {
 		return out;
@@ -75,6 +81,22 @@ void process_mat(const fs::path& in, const fs::path& out, const std::string& nam
 	archive(mat);
 }
 
+void process_texture(const fs::path& in, const fs::path& out, const std::string& name) {
+	Texture texture;
+	texture.name = name;
+	unsigned char* data = stbi_load(in.string().c_str(), &texture.width, &texture.height, &texture.channels_per_pixel, 0);
+	if (data == nullptr) {
+		stbi_image_free(data);
+		throw std::runtime_error("Could not load image " + in.string() + ": " + stbi_failure_reason());
+	}
+	long data_length = (long)texture.width * (long)texture.height * (long)texture.channels_per_pixel;
+	texture.data = std::vector<unsigned char>(data, data + data_length);
+	stbi_image_free(data);
+	std::ofstream out_file(out, std::ios::binary);
+	cereal::BinaryOutputArchive archive(out_file);
+	archive(texture);
+}
+
 void process_misc(const fs::path& in, const fs::path& out) {
 	fs::copy(in, out, fs::copy_options::overwrite_existing);
 }
@@ -85,8 +107,11 @@ void process(const fs::path& in, const fs::path& out, const std::string& name) {
 	if (in.extension().string() == std::string(".blend")) {
 		process_mdl(in, out, name);
 	}
-	if (in.extension().string() == std::string(".pmat")) {
+	else if (in.extension().string() == std::string(".pmat")) {
 		process_mat(in, out, name);
+	}
+	else if (in.extension().string() == std::string(".png")) {
+		process_texture(in, out, name);
 	}
 	else {
 		process_misc(in, out);

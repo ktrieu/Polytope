@@ -169,6 +169,7 @@ exit 0</Command>
     <ClInclude Include="include\polytope_tools\cereal_glm.h" />
     <ClInclude Include="include\polytope_tools\Material.h" />
     <ClInclude Include="include\polytope_tools\Mesh.h" />
+    <ClInclude Include="include\polytope_tools\Texture.h" />
     <ClInclude Include="src\FileSystemWatcher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

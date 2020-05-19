@@ -15,6 +15,7 @@ For **PolytopeTools**, you'll need:
 - `cereal` (header-only)
 - `glm` (header-only)
 - `assimp` (Download the VS 2019 version, and copy `assimp-vc142-mtd.lib` into `lib/x64/` and `assimp-vc142-mtd.dll` into `dll/x64/`. 
+- `stb_image` (copy the header file [here](https://github.com/nothings/stb/blob/master/stb_image.h) into `include/`)
 
 ### PolytopeTools
 **PolytopeTools** preprocessses files for **Polytope**. Run it with `PolytopeTools.exe <input directory> <output directory>`. By default, the input directory is at `Polytope/resource` and **Polytope** will look for the output in `Polytope/data`. Once run, **PolytopeTools** will watch the input directory for changes.
