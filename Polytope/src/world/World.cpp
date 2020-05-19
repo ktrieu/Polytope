@@ -21,7 +21,7 @@ void World::load(ResourceLoader& loader) {
 	Mesh& suzanne = loader.get_mesh("mesh/suzanne");
 	std::vector<Mesh> meshes = { suzanne };
 	m_renderer.upload_meshes(meshes);
-	m_entities.emplace_back(suzanne, glm::vec3(0.0f, 0.0f, -3.0f));
+	m_entities.emplace_back("mesh/suzanne", "material/test", glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
 void World::update() {

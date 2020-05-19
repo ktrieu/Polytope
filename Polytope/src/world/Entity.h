@@ -7,17 +7,19 @@
 class Entity {
 
 public:
-	Entity(Mesh& mesh, glm::vec3 pos);
+	Entity(const std::string& mesh_name, const std::string& material_name, glm::vec3 pos);
 	~Entity();
 
-	const Mesh& get_mesh() const { return m_mesh; }
+	const std::string& get_mesh() const { return m_mesh; }
+	const std::string& get_material() const { return m_material; }
 	glm::mat4 get_transform() const { return m_transform; }
 
 	void update();
 
 private:
 	glm::mat4 m_transform = glm::mat4(1.0f);
-	Mesh& m_mesh;
+	std::string m_mesh;
+	std::string m_material;
 
 };
 

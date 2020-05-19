@@ -22,7 +22,7 @@ void EntityRenderer::upload_meshes(std::vector<Mesh>& meshes) {
 }
 
 void EntityRenderer::draw_entity(const Entity& entity) {
-	MeshOffset offset = m_meshes.get_mesh_offset(entity.get_mesh().name);
+	MeshOffset offset = m_meshes.get_mesh_offset(entity.get_mesh());
 	m_draw_calls.push_back(DrawCall{ offset, entity.get_transform() });
 }
 
