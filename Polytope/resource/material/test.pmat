@@ -1,4 +1,4 @@
-texture = no_texture
+texture = texture/taco
 shader = shader/basic
 
 # comments can exist

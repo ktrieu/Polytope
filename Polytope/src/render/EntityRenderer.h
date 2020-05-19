@@ -10,6 +10,7 @@
 #include <world/Entity.h>
 #include <render/Camera.h>
 #include <polytope_tools/Material.h>
+#include <polytope_tools/Texture.h>
 
 class ResourceLoader;
 
@@ -26,6 +27,7 @@ public:
 	~EntityRenderer();
 
 	void upload_meshes(std::vector<Mesh>& meshes);
+	void upload_textures(std::vector<Texture>& textures);
 
 	void draw_entity(const Entity& entity);
 	void render(Camera& camera, ResourceLoader& loader);
@@ -35,6 +37,8 @@ private:
 
 	GLuint m_vao = 0;
 	MeshBuffer m_meshes;
+	std::unordered_map<std::string, GLuint> m_texture_ids;
+
 	std::vector<DrawCall> m_draw_calls;
 
 };

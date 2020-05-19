@@ -16,10 +16,13 @@ void World::load(ResourceLoader& loader) {
 	loader.load_from_subdirectory("shader/");
 	loader.load_from_subdirectory("texture/");
 	loader.load_from_subdirectory("material/");
-	Mesh& suzanne = loader.get_mesh("mesh/suzanne");
-	std::vector<Mesh> meshes = { suzanne };
+	Mesh& wall = loader.get_mesh("mesh/wall");
+	std::vector<Mesh> meshes = { wall };
 	m_renderer.upload_meshes(meshes);
-	m_entities.emplace_back("mesh/suzanne", "material/test", glm::vec3(0.0f, 0.0f, -3.0f));
+	Texture& taco = loader.get_texture("texture/taco");
+	std::vector<Texture> textures = { taco };
+	m_renderer.upload_textures(textures);
+	m_entities.emplace_back("mesh/wall", "material/test", glm::vec3(0.0f, 0.0f, -3.0f));
 }
 
 void World::update() {

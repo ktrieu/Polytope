@@ -18,6 +18,7 @@ public:
 	Mesh& get_mesh(const std::string& name);
 	ShaderProgram& get_shader(const std::string& name);
 	Material& get_material(const std::string& name);
+	Texture& get_texture(const std::string& name);
 
 	void load_from_subdirectory(const std::string& dir);
 

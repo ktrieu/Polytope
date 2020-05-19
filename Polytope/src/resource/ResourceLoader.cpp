@@ -46,6 +46,16 @@ Material& ResourceLoader::get_material(const std::string& name) {
 	}
 }
 
+Texture& ResourceLoader::get_texture(const std::string& name) {
+	auto result = m_textures.find(name);
+	if (result != m_textures.end()) {
+		return (*result).second;
+	}
+	else {
+		throw std::invalid_argument("Texture " + name + " not found.");
+	}
+}
+
 void ResourceLoader::load_from_subdirectory(const std::string& dir) {
 	fs::recursive_directory_iterator dir_iter(m_root_folder / dir);
 	for (fs::path file : dir_iter) {

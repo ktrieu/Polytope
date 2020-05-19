@@ -2,10 +2,13 @@
 
 layout(location = 0) in vec3 pos;
 layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 uv;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+
+uniform sampler2D tex_sampler;
 
 out vec4 color;
 
@@ -13,9 +16,7 @@ const vec3 light_pos = vec3(4.0, 4.0, -4.0);
 const float light_strength = 2;
 
 const float ambient_fac = 0.1f;
-const vec3 ambient_color = vec3(0.058, 0.298, 0.506);
 const float diffuse_fac = 1.0f;
-const vec3 diffuse_color = vec3(0.058, 0.298, 0.506);
 const float specular_fac = 1.0f;
 const vec3 specular_color = vec3(1.0, 1.0, 1.0);
 const float shininess = 80.0f;
@@ -33,9 +34,11 @@ void main() {
 		specular = pow(spec_angle, shininess);
 	}
 
+	vec3 texture_color = texture(tex_sampler, uv).xyz;
+
 	vec3 final_color = (
-		ambient_fac * ambient_color +
-		diffuse_fac * diffuse * diffuse_color +
+		ambient_fac * texture_color +
+		diffuse_fac * diffuse * texture_color +
 		specular_fac * specular * specular_color
 	);
 

@@ -14,6 +14,7 @@ public:
 	void unuse();
 
 	void uploadUniform(const glm::mat4& mat, const std::string& name);
+	void uploadUniform(const int value, const std::string& name);
 
 private:
 	GLuint compile_shader(const std::string& code, GLenum shader_type);
