@@ -14,6 +14,8 @@ World::~World() {
 void World::load(ResourceLoader& loader) {
 	loader.load_from_subdirectory("mesh/");
 	loader.load_from_subdirectory("shader/");
+	loader.load_from_subdirectory("texture/");
+	loader.load_from_subdirectory("material/");
 	ShaderProgram& basic_shader = loader.get_shader("shader/basic");
 	m_renderer.load_shader(basic_shader);
 	Mesh& suzanne = loader.get_mesh("mesh/suzanne");

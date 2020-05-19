@@ -46,6 +46,12 @@ void ResourceLoader::load_from_subdirectory(const std::string& dir) {
 		if (file.extension() == ".mdl") {
 			load_mesh(file, name);
 		}
+		if (file.extension() == ".tex") {
+			load_texture(file, name);
+		}
+		if (file.extension() == ".pmat") {
+			load_material(file, name);
+		}
 	}
 }
 
@@ -69,4 +75,18 @@ void ResourceLoader::load_shader(const fs::path& path, const std::string& name) 
 	frag_stream << frag_file.rdbuf();
 	m_shaders.emplace(std::piecewise_construct, std::forward_as_tuple(name),
 		std::forward_as_tuple(vert_stream.str(), frag_stream.str()));
+}
+
+void ResourceLoader::load_texture(const fs::path& path, const std::string& name) {
+	std::ifstream f_stream(path, std::ios::binary);
+	cereal::BinaryInputArchive archive(f_stream);
+	auto result = m_textures.emplace(name, Texture{});
+	archive(result.first->second);
+}
+
+void ResourceLoader::load_material(const fs::path& path, const std::string& name) {
+	std::ifstream f_stream(path, std::ios::binary);
+	cereal::BinaryInputArchive archive(f_stream);
+	auto result = m_materials.emplace(name, Material{});
+	archive(result.first->second);
 }
