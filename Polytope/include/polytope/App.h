@@ -2,11 +2,10 @@
 
 #include <resource/ResourceLoader.h>
 #include <input/InputManager.h>
-#include <input/InputSubscriber.h>
 
 struct GLFWwindow;
 
-class App : public InputSubscriber {
+class App {
 
 public:
 	App();
@@ -15,9 +14,8 @@ public:
 	bool init();
 	void start();
 
+	GLFWwindow* get_window() { return m_wnd; }
 	InputManager& get_input_manager() { return m_input_manager; }
-
-	void on_key_press(VirtualKey key) override;
 
 private:
 	bool init_GL();

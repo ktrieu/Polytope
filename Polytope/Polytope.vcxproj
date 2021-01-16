@@ -119,6 +119,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
+      <PreprocessorDefinitions>GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -191,7 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\input\InputManager.h" />
-    <ClInclude Include="src\input\InputSubscriber.h" />
+    <ClInclude Include="src\input\VirtualKey.h" />
     <ClInclude Include="src\render\Camera.h" />
     <ClInclude Include="src\world\Entity.h" />
     <ClInclude Include="src\render\EntityRenderer.h" />

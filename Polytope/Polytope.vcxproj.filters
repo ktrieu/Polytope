@@ -80,7 +80,7 @@
     <ClInclude Include="src\input\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\input\InputSubscriber.h">
+    <ClInclude Include="src\input\VirtualKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

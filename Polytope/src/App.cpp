@@ -11,16 +11,6 @@
 
 #include <world/World.h>
 
-static void glfw_key_callback(GLFWwindow* wnd, int key, int scancode, int action, int mods) {
-	App* app_ptr = static_cast<App*>(glfwGetWindowUserPointer(wnd));
-	app_ptr->get_input_manager().on_glfw_key_event(key, scancode, action, mods);
-}
-
-static void glfw_cursor_pos_callback(GLFWwindow* wnd, double x, double y) {
-	App* app_ptr = static_cast<App*>(glfwGetWindowUserPointer(wnd));
-	app_ptr->get_input_manager().on_glfw_cursor_pos_event(x, y);
-}
-
 bool App::init_GL() {
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == false) {
 		std::cout << "OpenGL context initialization failed.\n";
@@ -47,14 +37,11 @@ bool App::init_GLFW() {
 		return false;
 	}
 
-	glfwSetWindowUserPointer(m_wnd, this);
-	glfwSetKeyCallback(m_wnd, glfw_key_callback);
-	glfwSetCursorPosCallback(m_wnd, glfw_cursor_pos_callback);
-
 	glfwSetInputMode(m_wnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (glfwRawMouseMotionSupported()) {
 		glfwSetInputMode(m_wnd, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 	}
+	glfwSetCursorPos(m_wnd, 0, 0);
 
 	glfwMakeContextCurrent(m_wnd);
 	return true;
@@ -73,9 +60,20 @@ bool App::init() {
 void App::start() {
 	World world(*this);
 	world.load(m_resource_loader);
-	m_input_manager.subscribe(world);
+	auto last_time = std::chrono::system_clock::now();
 	while (!glfwWindowShouldClose(m_wnd)) {
+		auto current_time = std::chrono::system_clock::now();
+		std::chrono::duration<double, std::milli> delta = current_time - last_time;
+		last_time = current_time;
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		m_input_manager.update(delta.count());
+
+		// hard code exit in here for now
+		if (m_input_manager.get_key_state(VirtualKey::EXIT)) {
+			glfwSetWindowShouldClose(m_wnd, true);
+		}
+
 		world.update();
 		world.render(m_resource_loader);
 		glfwPollEvents();
@@ -83,15 +81,8 @@ void App::start() {
 	}
 }
 
-void App::on_key_press(VirtualKey key) {
-	if (key == VirtualKey::EXIT) {
-		glfwSetWindowShouldClose(m_wnd, true);
-	}
-}
 
-App::App() : m_resource_loader("data/") {
-	m_input_manager.subscribe(*this);
-}
+App::App() : m_resource_loader("data/"), m_input_manager(*this) {}
 
 App::~App() {
 }

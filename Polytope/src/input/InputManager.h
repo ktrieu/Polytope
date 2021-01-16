@@ -1,27 +1,36 @@
 #pragma once
 
-#include <vector>
-#include <chrono>
+#include <input/VirtualKey.h>
 
-class InputSubscriber;
+#include <vector>
+#include <unordered_map>
+#include <glm/glm.hpp>
+
+class App;
 
 class InputManager {
 
 public:
-	InputManager();
+	InputManager(App& app);
 	~InputManager();
 
-	void subscribe(InputSubscriber& subscriber);
+	void update(double dt);
 
-	void on_glfw_key_event(int key, int scancode, int action, int mods);
-	void on_glfw_cursor_pos_event(double x, double y);
+	bool get_key_state(VirtualKey key);
+	glm::vec2 get_mouse_delta();
+
 
 private:
+	void update_key(VirtualKey v_key, int action);
+	void update_mouse_delta(double x, double y, double dt);
+
+	App& m_app;
+
 	double m_last_mouse_x = 0;
 	double m_last_mouse_y = 0;
-	std::chrono::system_clock::time_point m_last_mouse_event_time = std::chrono::system_clock::now();
+	double m_mouse_dx = 0;
+	double m_mouse_dy = 0;
 
-
-	std::vector<std::reference_wrapper<InputSubscriber>> m_subscribers;
+	std::unordered_map<VirtualKey, bool> m_keys;
 
 };

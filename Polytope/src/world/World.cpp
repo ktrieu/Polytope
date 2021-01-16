@@ -26,6 +26,10 @@ void World::load(ResourceLoader& loader) {
 }
 
 void World::update() {
+	auto mouse_delta = m_app.get_input_manager().get_mouse_delta();
+	if (mouse_delta.x != 0 || mouse_delta.y != 0) {
+		std::cout << mouse_delta.x << ", " << mouse_delta.y << "\n";
+	}
 	m_camera.update();
 	for (Entity& entity : m_entities) {
 		entity.update();
@@ -35,12 +39,4 @@ void World::update() {
 
 void World::render(ResourceLoader& loader) {
 	m_renderer.render(m_camera, loader);
-}
-
-void World::on_key_press(VirtualKey key) {
-	std::cout << "KEY PRESSED: " << virtual_key_to_string(key) << "\n";
-}
-
-void World::on_mouse_move(double dx, double dy) {
-	std::cout << "MOUSE MOVED: (" << dx << ", " << dy << ")\n";
 }
