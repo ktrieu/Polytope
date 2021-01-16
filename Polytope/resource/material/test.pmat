@@ -1,4 +1,4 @@
-texture = texture/taco
+texture = texture/marble
 shader = shader/basic
 
 # comments can exist

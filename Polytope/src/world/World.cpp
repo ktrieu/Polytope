@@ -19,8 +19,8 @@ void World::load(ResourceLoader& loader) {
 	Mesh& wall = loader.get_mesh("mesh/wall");
 	std::vector<Mesh> meshes = { wall };
 	m_renderer.upload_meshes(meshes);
-	Texture& taco = loader.get_texture("texture/taco");
-	std::vector<Texture> textures = { taco };
+	Texture& marble = loader.get_texture("texture/marble");
+	std::vector<Texture> textures = { marble };
 	m_renderer.upload_textures(textures);
 	m_entities.emplace_back("mesh/wall", "material/test", glm::vec3(0.0f, 0.0f, 0.0f));
 }
