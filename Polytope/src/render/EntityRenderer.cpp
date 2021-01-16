@@ -1,6 +1,7 @@
 #include "EntityRenderer.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 #include <polytope_tools/Mesh.h>
 #include <render/Camera.h>
@@ -18,6 +19,15 @@ void EntityRenderer::upload_meshes(std::vector<Mesh>& meshes) {
 	m_meshes.upload_meshes(meshes);
 }
 
+GLenum get_format_for_texture(const Texture& texture) {
+	if (texture.channels_per_pixel == 3) {
+		return GL_RGB;
+	}
+	else if (texture.channels_per_pixel == 4) {
+		return GL_RGBA;
+	}
+}
+
 void EntityRenderer::upload_textures(std::vector<Texture>& textures) {
 	for (const auto& texture : textures) {
 		GLuint texture_id;
@@ -27,7 +37,8 @@ void EntityRenderer::upload_textures(std::vector<Texture>& textures) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data.data());
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, get_format_for_texture(texture), GL_UNSIGNED_BYTE, texture.data.data());
+		std::cout << glGetError() << '\n';
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		m_texture_ids.emplace(texture.name, texture_id);
