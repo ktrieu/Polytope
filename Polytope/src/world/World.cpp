@@ -36,3 +36,11 @@ void World::update() {
 void World::render(ResourceLoader& loader) {
 	m_renderer.render(m_camera, loader);
 }
+
+void World::on_key_press(VirtualKey key) {
+	std::cout << "KEY PRESSED: " << virtual_key_to_string(key) << "\n";
+}
+
+void World::on_mouse_move(double dx, double dy) {
+	std::cout << "MOUSE MOVED: (" << dx << ", " << dy << ")\n";
+}

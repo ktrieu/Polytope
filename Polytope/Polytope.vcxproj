@@ -177,6 +177,7 @@
     <Text Include="resource\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\input\InputManager.cpp" />
     <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\world\Entity.cpp" />
     <ClCompile Include="src\render\EntityRenderer.cpp" />
@@ -189,6 +190,8 @@
     <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\input\InputManager.h" />
+    <ClInclude Include="src\input\InputSubscriber.h" />
     <ClInclude Include="src\render\Camera.h" />
     <ClInclude Include="src\world\Entity.h" />
     <ClInclude Include="src\render\EntityRenderer.h" />

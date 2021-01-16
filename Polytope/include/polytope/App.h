@@ -1,10 +1,12 @@
 #pragma once
 
 #include <resource/ResourceLoader.h>
+#include <input/InputManager.h>
+#include <input/InputSubscriber.h>
 
 struct GLFWwindow;
 
-class App {
+class App : public InputSubscriber {
 
 public:
 	App();
@@ -13,8 +15,9 @@ public:
 	bool init();
 	void start();
 
-	void on_key_event(int key, int scancode, int action, int mods);
-	void on_cursor_pos_event(double x, double y);
+	InputManager& get_input_manager() { return m_input_manager; }
+
+	void on_key_press(VirtualKey key) override;
 
 private:
 	bool init_GL();
@@ -25,7 +28,9 @@ private:
 	int m_height = 480;
 	GLFWwindow* m_wnd = nullptr;
 
+	InputManager m_input_manager;
 	ResourceLoader m_resource_loader;
+
 
 };
 

@@ -13,12 +13,12 @@
 
 static void glfw_key_callback(GLFWwindow* wnd, int key, int scancode, int action, int mods) {
 	App* app_ptr = static_cast<App*>(glfwGetWindowUserPointer(wnd));
-	app_ptr->on_key_event(key, scancode, action, mods);
+	app_ptr->get_input_manager().on_glfw_key_event(key, scancode, action, mods);
 }
 
 static void glfw_cursor_pos_callback(GLFWwindow* wnd, double x, double y) {
 	App* app_ptr = static_cast<App*>(glfwGetWindowUserPointer(wnd));
-	app_ptr->on_cursor_pos_event(x, y);
+	app_ptr->get_input_manager().on_glfw_cursor_pos_event(x, y);
 }
 
 bool App::init_GL() {
@@ -70,20 +70,10 @@ bool App::init() {
 	return true;
 }
 
-void App::on_key_event(int key, int scancode, int action, int mods) {
-	// handle exit
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		glfwSetWindowShouldClose(m_wnd, true);
-	}
-}
-
-void App::on_cursor_pos_event(double x, double y) {
-	std::cout << "MOUSE MOVED: (" << x << ", " << y << ")\n";
-}
-
 void App::start() {
 	World world(*this);
 	world.load(m_resource_loader);
+	m_input_manager.subscribe(world);
 	while (!glfwWindowShouldClose(m_wnd)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.update();
@@ -93,7 +83,14 @@ void App::start() {
 	}
 }
 
+void App::on_key_press(VirtualKey key) {
+	if (key == VirtualKey::EXIT) {
+		glfwSetWindowShouldClose(m_wnd, true);
+	}
+}
+
 App::App() : m_resource_loader("data/") {
+	m_input_manager.subscribe(*this);
 }
 
 App::~App() {
