@@ -22,12 +22,26 @@ void World::load(ResourceLoader& loader) {
 	Texture& taco = loader.get_texture("texture/taco");
 	std::vector<Texture> textures = { taco };
 	m_renderer.upload_textures(textures);
-	m_entities.emplace_back("mesh/wall", "material/test", glm::vec3(0.0f, 0.0f, -3.0f));
+	m_entities.emplace_back("mesh/wall", "material/test", glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void World::update() {
-	auto mouse_delta = m_app.get_input_manager().get_mouse_delta();
+	auto input = m_app.get_input_manager();
+	auto mouse_delta = input.get_mouse_delta();
 	m_camera.look(mouse_delta);
+
+	if (input.get_key_state(VirtualKey::FORWARD)) {
+		m_camera.move({ 0, 0, -1 });
+	}
+	else if (input.get_key_state(VirtualKey::BACK)) {
+		m_camera.move({ 0, 0, 1 });
+	}
+	else if (input.get_key_state(VirtualKey::LEFT)) {
+		m_camera.move({ -1, 0, 0 });
+	}
+	else if (input.get_key_state(VirtualKey::RIGHT)) {
+		m_camera.move({ 1, 0, 0 });
+	}
 
 	m_camera.update();
 	for (Entity& entity : m_entities) {

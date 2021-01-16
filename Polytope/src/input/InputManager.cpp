@@ -47,7 +47,7 @@ void InputManager::update_key(VirtualKey v_key, int action) {
 	if (action == GLFW_PRESS) {
 		m_keys[v_key] = true;
 	}
-	else if (action == GLFW_REPEAT) {
+	else if (action == GLFW_RELEASE) {
 		m_keys[v_key] = false;
 	}
 }
