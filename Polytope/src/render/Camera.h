@@ -36,7 +36,7 @@ private:
 
 	const float X_SENSITIVITY = 0.5;
 	const float Y_SENSITIVITY = 0.5;
-	const float MOVE_SPEED = 0.001;
+	const float MOVE_SPEED = 0.01;
 
 	void clamp_angles();
 	void recalculate_matrices();

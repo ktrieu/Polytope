@@ -2,6 +2,7 @@
 
 #include <App.h>
 #include <resource/ResourceLoader.h>
+#include <random>
 
 World::World(App& app) : m_app(app) {
 
@@ -22,7 +23,19 @@ void World::load(ResourceLoader& loader) {
 	Texture& marble = loader.get_texture("texture/marble");
 	std::vector<Texture> textures = { marble };
 	m_renderer.upload_textures(textures);
-	m_entities.emplace_back("mesh/wall", "material/test", glm::vec3(0.0f, 0.0f, 0.0f));
+	// generate a bunch of random entities
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_real_distribution<float> pos_dist(0.0, 20.0);
+	std::uniform_real_distribution<float> rot_dist(0.0, 360.0);
+	for (int i = 0; i < 100; i++) {
+		m_entities.emplace_back(
+			"mesh/wall", 
+			"material/test", 
+			glm::vec3(pos_dist(rng), pos_dist(rng), pos_dist(rng)), 
+			glm::vec3(rot_dist(rng), rot_dist(rng), rot_dist(rng))
+		);
+	}
 }
 
 void World::update() {

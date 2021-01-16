@@ -7,7 +7,7 @@
 class Entity {
 
 public:
-	Entity(const std::string& mesh_name, const std::string& material_name, glm::vec3 pos);
+	Entity(const std::string& mesh_name, const std::string& material_name, glm::vec3 pos, glm::vec3 rot);
 	~Entity();
 
 	const std::string& get_mesh() const { return m_mesh; }
