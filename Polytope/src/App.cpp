@@ -11,6 +11,16 @@
 
 #include <world/World.h>
 
+static void glfw_key_callback(GLFWwindow* wnd, int key, int scancode, int action, int mods) {
+	App* app_ptr = static_cast<App*>(glfwGetWindowUserPointer(wnd));
+	app_ptr->on_key_event(key, scancode, action, mods);
+}
+
+static void glfw_cursor_pos_callback(GLFWwindow* wnd, double x, double y) {
+	App* app_ptr = static_cast<App*>(glfwGetWindowUserPointer(wnd));
+	app_ptr->on_cursor_pos_event(x, y);
+}
+
 bool App::init_GL() {
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == false) {
 		std::cout << "OpenGL context initialization failed.\n";
@@ -31,10 +41,21 @@ bool App::init_GLFW() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	m_wnd = glfwCreateWindow(m_width, m_height, "Polytope", NULL, NULL);
+
 	if (m_wnd == nullptr) {
 		std::cout << "Window creation failed.\n";
 		return false;
 	}
+
+	glfwSetWindowUserPointer(m_wnd, this);
+	glfwSetKeyCallback(m_wnd, glfw_key_callback);
+	glfwSetCursorPosCallback(m_wnd, glfw_cursor_pos_callback);
+
+	glfwSetInputMode(m_wnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (glfwRawMouseMotionSupported()) {
+		glfwSetInputMode(m_wnd, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+	}
+
 	glfwMakeContextCurrent(m_wnd);
 	return true;
 }
@@ -47,6 +68,17 @@ bool App::init() {
 		return false;
 	}
 	return true;
+}
+
+void App::on_key_event(int key, int scancode, int action, int mods) {
+	// handle exit
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		glfwSetWindowShouldClose(m_wnd, true);
+	}
+}
+
+void App::on_cursor_pos_event(double x, double y) {
+	std::cout << "MOUSE MOVED: (" << x << ", " << y << ")\n";
 }
 
 void App::start() {
