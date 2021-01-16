@@ -40,6 +40,14 @@ void Camera::set_rotation(float pitch, float yaw) {
 	m_dirty = true;
 }
 
+void Camera::look(glm::vec2& mouse_delta) {
+	rotate(mouse_delta.y * Y_SENSITIVITY, mouse_delta.x * X_SENSITIVITY);
+}
+
+void Camera::move(glm::vec3& dir) {
+
+}
+
 void Camera::clamp_angles() {
 	m_pitch = std::clamp(m_pitch, PITCH_MIN, PITCH_MAX);
 	m_yaw = std::fmodf(m_yaw, 360);

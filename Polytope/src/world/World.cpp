@@ -27,9 +27,8 @@ void World::load(ResourceLoader& loader) {
 
 void World::update() {
 	auto mouse_delta = m_app.get_input_manager().get_mouse_delta();
-	if (mouse_delta.x != 0 || mouse_delta.y != 0) {
-		std::cout << mouse_delta.x << ", " << mouse_delta.y << "\n";
-	}
+	m_camera.look(mouse_delta);
+
 	m_camera.update();
 	for (Entity& entity : m_entities) {
 		entity.update();
