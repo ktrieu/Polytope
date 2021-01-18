@@ -4,6 +4,8 @@
 
 #include <polytope_tools/Mesh.h>
 
+class EntityRenderer;
+
 class Entity {
 
 public:
@@ -15,6 +17,7 @@ public:
 	glm::mat4 get_transform() const { return m_transform; }
 
 	void update();
+	void render(EntityRenderer& renderer);
 
 private:
 	glm::mat4 m_transform = glm::mat4(1.0f);

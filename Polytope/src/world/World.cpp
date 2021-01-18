@@ -66,17 +66,19 @@ void World::update() {
 	}
 
 	m_camera.update();
-	
+
 	for (Entity& entity : m_entities) {
 		entity.update();
-		m_renderer.draw_entity(entity);
+	}
+}
+
+void World::render(ResourceLoader& loader) {
+	for (Entity& entity : m_entities) {
+		entity.render(m_renderer);
 	}
 
 	for (Light& light : m_lights) {
 		m_renderer.draw_light(light);
 	}
-}
-
-void World::render(ResourceLoader& loader) {
 	m_renderer.render(m_camera, loader);
 }

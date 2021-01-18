@@ -1,5 +1,7 @@
 #include "Entity.h"
 
+#include <render/EntityRenderer.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
@@ -20,4 +22,8 @@ Entity::~Entity() {
 }
 
 void Entity::update() {
+}
+
+void Entity::render(EntityRenderer& renderer) {
+	renderer.draw_entity(*this);
 }
