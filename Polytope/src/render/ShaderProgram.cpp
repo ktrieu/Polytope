@@ -55,6 +55,32 @@ void ShaderProgram::uploadUniform(const int value, const std::string& name) {
 	}
 }
 
+void ShaderProgram::uploadUniform(const glm::vec3& vec, const std::string& name) {
+	if (!m_active) {
+		throw std::runtime_error("Cannot upload uniform to non-active shader program.");
+	}
+	GLint location = glGetUniformLocation(m_program, name.c_str());
+	if (location != -1) {
+		glUniform3f(location, vec.x, vec.y, vec.z);
+	}
+	else {
+		throw std::invalid_argument("Uniform " + name + " not found.");
+	}
+}
+
+void ShaderProgram::uploadUniform(const float value, const std::string& name) {
+	if (!m_active) {
+		throw std::runtime_error("Cannot upload uniform to non-active shader program.");
+	}
+	GLint location = glGetUniformLocation(m_program, name.c_str());
+	if (location != -1) {
+		glUniform1f(location, value);
+	}
+	else {
+		throw std::invalid_argument("Uniform " + name + " not found.");
+	}
+}
+
 GLuint ShaderProgram::compile_shader(const std::string& code, GLenum shader_type) {
 	GLuint shader_id = glCreateShader(shader_type);
 	//unfortunately glShaderSource wants arrays of string and lengths, so we have to do some gymnastics

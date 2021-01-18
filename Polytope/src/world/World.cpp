@@ -28,12 +28,21 @@ void World::load(ResourceLoader& loader) {
 	std::mt19937 rng(dev());
 	std::uniform_real_distribution<float> pos_dist(0.0, 20.0);
 	std::uniform_real_distribution<float> rot_dist(0.0, 360.0);
+	std::uniform_real_distribution<float> color_dist(0.0, 1.0);
 	for (int i = 0; i < 100; i++) {
 		m_entities.emplace_back(
 			"mesh/wall", 
 			"material/test", 
 			glm::vec3(pos_dist(rng), pos_dist(rng), pos_dist(rng)), 
 			glm::vec3(rot_dist(rng), rot_dist(rng), rot_dist(rng))
+		);
+	}
+	// and a bunch of random lights
+	for (int i = 0; i < 20; i++) {
+		m_lights.emplace_back(
+			glm::vec3(pos_dist(rng), pos_dist(rng), pos_dist(rng)),
+			glm::vec3(color_dist(rng), color_dist(rng), color_dist(rng)),
+			3
 		);
 	}
 }
@@ -57,9 +66,14 @@ void World::update() {
 	}
 
 	m_camera.update();
+	
 	for (Entity& entity : m_entities) {
 		entity.update();
 		m_renderer.draw_entity(entity);
+	}
+
+	for (Light& light : m_lights) {
+		m_renderer.draw_light(light);
 	}
 }
 

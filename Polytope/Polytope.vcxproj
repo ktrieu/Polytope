@@ -195,6 +195,7 @@
     <ClInclude Include="src\input\InputManager.h" />
     <ClInclude Include="src\input\VirtualKey.h" />
     <ClInclude Include="src\render\Camera.h" />
+    <ClInclude Include="src\world\Light.h" />
     <ClInclude Include="src\world\Entity.h" />
     <ClInclude Include="src\render\EntityRenderer.h" />
     <ClInclude Include="include\polytope\App.h" />

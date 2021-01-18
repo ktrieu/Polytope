@@ -34,6 +34,7 @@ public:
 	void upload_textures(std::vector<Texture>& textures);
 
 	void draw_entity(const Entity& entity);
+	void draw_light(const Light& light);
 	void render(Camera& camera, ResourceLoader& loader);
 
 private:

@@ -83,6 +83,9 @@
     <ClInclude Include="src\input\VirtualKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\world\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shader\basic.vert" />

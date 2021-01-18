@@ -17,7 +17,7 @@ bool App::init_GL() {
 		return false;
 	}
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.745f, 0.895f, 0.0f, 0.722f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glActiveTexture(GL_TEXTURE0);
 	return true;
 }

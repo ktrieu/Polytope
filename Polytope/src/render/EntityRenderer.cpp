@@ -58,6 +58,10 @@ void EntityRenderer::draw_entity(const Entity& entity) {
 	}
 }
 
+void EntityRenderer::draw_light(const Light& light) {
+	m_lights.push_back(light);
+}
+
 void EntityRenderer::render(Camera& camera, ResourceLoader& loader) {
 	glBindVertexArray(m_vao);
 	glm::mat4 view = camera.get_view();
@@ -71,15 +75,28 @@ void EntityRenderer::render(Camera& camera, ResourceLoader& loader) {
 		shader.uploadUniform(view, "view");
 		shader.uploadUniform(proj, "projection");
 		shader.uploadUniform(0, "tex_sampler");
+		shader.uploadUniform(static_cast<int>(m_lights.size()), "num_lights");
+		for (int i = 0; i < m_lights.size(); i++) {
+			Light light = m_lights.at(i);
+			std::string light_struct_name = "lights[" + std::to_string(i) + "]";
+			glm::vec3 light_pos_view_space = view * glm::vec4(light.pos, 1.0);
+			shader.uploadUniform(light_pos_view_space, light_struct_name + ".pos");
+			shader.uploadUniform(light.color, light_struct_name + ".color");
+			shader.uploadUniform(light.strength, light_struct_name + ".strength");
+		}
+
 		for (auto& draw_call : material_draw_calls.second) {
 			glm::mat4 model = draw_call.transform;
 			shader.uploadUniform(model, "model");
 			glDrawElementsBaseVertex(GL_TRIANGLES, draw_call.offset.index_len, GL_UNSIGNED_SHORT,
 				(void*)(draw_call.offset.index_offset * sizeof(unsigned short)), draw_call.offset.base_vertex);
-			}
+		}
+
+		shader.unuse();
 	}
 	glBindVertexArray(0);
 	m_draw_calls.clear();
+	m_lights.clear();
 }
 
 GLuint EntityRenderer::init_vao() {
