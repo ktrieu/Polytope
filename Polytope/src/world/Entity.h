@@ -24,7 +24,12 @@ public:
 	void render(EntityRenderer& renderer);
 
 private:
+	void recalculate_transform();
+
+	glm::vec3 m_pos;
+	glm::vec3 m_rot;
 	glm::mat4 m_transform = glm::mat4(1.0f);
+
 	std::string m_mesh;
 	std::string m_material;
 
