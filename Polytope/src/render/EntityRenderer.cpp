@@ -38,7 +38,6 @@ void EntityRenderer::upload_textures(std::vector<Texture>& textures) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.width, texture.height, 0, get_format_for_texture(texture), GL_UNSIGNED_BYTE, texture.data.data());
-		std::cout << glGetError() << '\n';
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		m_texture_ids.emplace(texture.name, texture_id);
@@ -47,25 +46,37 @@ void EntityRenderer::upload_textures(std::vector<Texture>& textures) {
 
 void EntityRenderer::draw_entity(const Entity& entity) {
 	MeshOffset offset = m_meshes.get_mesh_offset(entity.get_mesh());
-	m_draw_calls.push_back(DrawCall{ offset, entity.get_material(), entity.get_transform() });
+	auto material_draw_calls = m_draw_calls.find(entity.get_material());
+
+	DrawCall new_draw_call(offset, entity.get_material(), entity.get_transform());
+
+	if (material_draw_calls != m_draw_calls.end()) {
+		material_draw_calls->second.push_back(new_draw_call);
+	}
+	else {
+		m_draw_calls.emplace(entity.get_material(), std::vector<DrawCall>{ new_draw_call });
+	}
 }
 
 void EntityRenderer::render(Camera& camera, ResourceLoader& loader) {
 	glBindVertexArray(m_vao);
 	glm::mat4 view = camera.get_view();
 	glm::mat4 proj = camera.get_proj();
-	for (DrawCall& call : m_draw_calls) {
-		Material& mat = loader.get_material(call.material);
+
+	for (auto& material_draw_calls : m_draw_calls) {
+		Material& mat = loader.get_material(material_draw_calls.first);
 		ShaderProgram& shader = loader.get_shader(mat.shader_name);
 		shader.use();
 		glBindTexture(GL_TEXTURE_2D, m_texture_ids[mat.texture_name]);
-		glm::mat4 model = call.transform;
-		shader.uploadUniform(model, "model");
 		shader.uploadUniform(view, "view");
 		shader.uploadUniform(proj, "projection");
 		shader.uploadUniform(0, "tex_sampler");
-		glDrawElementsBaseVertex(GL_TRIANGLES, call.offset.index_len, GL_UNSIGNED_SHORT,
-			(void*)(call.offset.index_offset * sizeof(unsigned short)), call.offset.base_vertex);
+		for (auto& draw_call : material_draw_calls.second) {
+			glm::mat4 model = draw_call.transform;
+			shader.uploadUniform(model, "model");
+			glDrawElementsBaseVertex(GL_TRIANGLES, draw_call.offset.index_len, GL_UNSIGNED_SHORT,
+				(void*)(draw_call.offset.index_offset * sizeof(unsigned short)), draw_call.offset.base_vertex);
+			}
 	}
 	glBindVertexArray(0);
 	m_draw_calls.clear();

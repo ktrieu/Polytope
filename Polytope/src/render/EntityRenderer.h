@@ -8,6 +8,7 @@
 #include "MeshBuffer.h"
 #include "ShaderProgram.h"
 #include <world/Entity.h>
+#include <world/Light.h>
 #include <render/Camera.h>
 #include <polytope_tools/Material.h>
 #include <polytope_tools/Texture.h>
@@ -18,6 +19,9 @@ struct DrawCall {
 	MeshOffset offset;
 	std::string material;
 	glm::mat4 transform;
+
+	DrawCall(MeshOffset offset, std::string material, glm::mat4 transform) 
+		: offset(offset), material(material), transform(transform) {}
 };
 
 class EntityRenderer {
@@ -39,7 +43,8 @@ private:
 	MeshBuffer m_meshes;
 	std::unordered_map<std::string, GLuint> m_texture_ids;
 
-	std::vector<DrawCall> m_draw_calls;
+	std::unordered_map<std::string, std::vector<DrawCall>> m_draw_calls;
+	std::vector<Light> m_lights;
 
 };
 
