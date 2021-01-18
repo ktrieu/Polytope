@@ -4,7 +4,7 @@
 #include <resource/ResourceLoader.h>
 #include <random>
 
-World::World(App& app) : m_app(app) {
+World::World(App& app) : m_app(app), m_renderer(app.get_resource_loader()) {
 
 }
 
@@ -12,7 +12,9 @@ World::~World() {
 
 }
 
-void World::load(ResourceLoader& loader) {
+void World::load() {
+	ResourceLoader& loader = m_app.get_resource_loader();
+
 	loader.load_from_subdirectory("shader/");
 	loader.load_from_subdirectory("arena_scene/");
 	Mesh& arena = loader.get_mesh("arena_scene/arena/arena");
@@ -95,7 +97,7 @@ void World::update(double dt) {
 	}
 }
 
-void World::render(ResourceLoader& loader) {
+void World::render() {
 	for (Entity& entity : m_entities) {
 		entity.render(m_renderer);
 	}
@@ -103,5 +105,5 @@ void World::render(ResourceLoader& loader) {
 	for (Light& light : m_lights) {
 		m_renderer.draw_light(light);
 	}
-	m_renderer.render(m_camera, loader);
+	m_renderer.render(m_camera);
 }

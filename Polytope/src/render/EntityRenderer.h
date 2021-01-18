@@ -27,7 +27,7 @@ struct DrawCall {
 class EntityRenderer {
 
 public:
-	EntityRenderer();
+	EntityRenderer(ResourceLoader& loader);
 	~EntityRenderer();
 
 	void upload_meshes(std::vector<Mesh>& meshes);
@@ -35,10 +35,12 @@ public:
 
 	void draw_entity(const Entity& entity);
 	void draw_light(const Light& light);
-	void render(Camera& camera, ResourceLoader& loader);
+	void render(Camera& camera);
 
 private:
 	GLuint init_vao();
+
+	ResourceLoader& m_loader;
 
 	GLuint m_vao = 0;
 	MeshBuffer m_meshes;

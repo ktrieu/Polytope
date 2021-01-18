@@ -59,7 +59,7 @@ bool App::init() {
 
 void App::start() {
 	World world(*this);
-	world.load(m_resource_loader);
+	world.load();
 	auto last_time = std::chrono::system_clock::now();
 	while (!glfwWindowShouldClose(m_wnd)) {
 		auto current_time = std::chrono::system_clock::now();
@@ -75,7 +75,7 @@ void App::start() {
 		}
 
 		world.update(delta.count());
-		world.render(m_resource_loader);
+		world.render();
 		glfwPollEvents();
 		glfwSwapBuffers(m_wnd);
 	}

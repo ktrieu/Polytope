@@ -16,6 +16,7 @@ public:
 
 	GLFWwindow* get_window() { return m_wnd; }
 	InputManager& get_input_manager() { return m_input_manager; }
+	ResourceLoader& get_resource_loader() { return m_resource_loader; }
 
 private:
 	bool init_GL();

@@ -16,10 +16,10 @@ public:
 	World(App& app);
 	~World();
 
-	void load(ResourceLoader& loader);
+	void load();
 
 	void update(double dt);
-	void render(ResourceLoader& loader);
+	void render();
 
 private:
 	App& m_app;

@@ -7,7 +7,7 @@
 #include <render/Camera.h>
 #include <resource/ResourceLoader.h>
 
-EntityRenderer::EntityRenderer() {
+EntityRenderer::EntityRenderer(ResourceLoader& loader) : m_loader(loader) {
 	m_vao = init_vao();
 }
 
@@ -62,14 +62,14 @@ void EntityRenderer::draw_light(const Light& light) {
 	m_lights.push_back(light);
 }
 
-void EntityRenderer::render(Camera& camera, ResourceLoader& loader) {
+void EntityRenderer::render(Camera& camera) {
 	glBindVertexArray(m_vao);
 	glm::mat4 view = camera.get_view();
 	glm::mat4 proj = camera.get_proj();
 
 	for (auto& material_draw_calls : m_draw_calls) {
-		Material& mat = loader.get_material(material_draw_calls.first);
-		ShaderProgram& shader = loader.get_shader(mat.shader_name);
+		Material& mat = m_loader.get_material(material_draw_calls.first);
+		ShaderProgram& shader = m_loader.get_shader(mat.shader_name);
 		shader.use();
 		glBindTexture(GL_TEXTURE_2D, m_texture_ids[mat.texture_name]);
 		shader.uploadUniform(view, "view");
