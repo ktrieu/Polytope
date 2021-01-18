@@ -346,3 +346,6 @@ dna.txt
 
 #Ignore the Renderdoc settings
 renderdoc.cap
+
+# Ignore Blender version files
+*.blend[0-9]
