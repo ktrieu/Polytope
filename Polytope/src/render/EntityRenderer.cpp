@@ -75,12 +75,9 @@ void EntityRenderer::render_shadow_maps() {
 		m_shadow_map.use_shadow_map(i);
 
 		Light& light = m_lights.at(i);
-		glm::mat4 view = glm::lookAt(light.pos, light.pos + light.dir, glm::vec3(0.0f, 1.0f, 0.0f));
-		// all our shadow maps are square, so just use 1 for the aspect ratio
-		glm::mat4 proj = glm::perspective(light.fov, 1.0f, 0.01f, 100.0f);
 
-		shader.uploadUniform(view, "view");
-		shader.uploadUniform(proj, "projection");
+		shader.uploadUniform(light.get_view(), "view");
+		shader.uploadUniform(light.get_proj(), "projection");
 
 		for (auto& entry : m_draw_calls) {
 			for (auto& draw_call : entry.second) {
