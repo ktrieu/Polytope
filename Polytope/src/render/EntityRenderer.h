@@ -10,6 +10,7 @@
 #include <world/Entity.h>
 #include <world/Light.h>
 #include <render/Camera.h>
+#include <render/ShadowMap.h>
 #include <polytope_tools/Material.h>
 #include <polytope_tools/Texture.h>
 
@@ -41,6 +42,8 @@ private:
 	GLuint init_vao();
 
 	ResourceLoader& m_loader;
+
+	ShadowMap m_shadow_map;
 
 	GLuint m_vao = 0;
 	MeshBuffer m_meshes;

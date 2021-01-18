@@ -51,6 +51,9 @@
     <ClCompile Include="src\input\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\ShadowMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\polytope\App.h">
@@ -86,10 +89,15 @@
     <ClInclude Include="src\world\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\render\ShadowMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shader\basic.vert" />
     <None Include="resource\shader\basic.frag" />
     <None Include="resource\material\test.pmat" />
+    <None Include="resource\shader\shadow.vert" />
+    <None Include="resource\shader\shadow.frag" />
   </ItemGroup>
 </Project>

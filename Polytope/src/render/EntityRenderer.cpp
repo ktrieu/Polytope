@@ -7,7 +7,7 @@
 #include <render/Camera.h>
 #include <resource/ResourceLoader.h>
 
-EntityRenderer::EntityRenderer(ResourceLoader& loader) : m_loader(loader) {
+EntityRenderer::EntityRenderer(ResourceLoader& loader) : m_loader(loader), m_shadow_map(loader) {
 	m_vao = init_vao();
 }
 
