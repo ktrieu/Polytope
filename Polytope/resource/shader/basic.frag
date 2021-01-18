@@ -21,7 +21,7 @@ uniform sampler2D tex_sampler;
 
 out vec4 color;
 
-const float ambient_fac = 0.1f;
+const float ambient_fac = 0.5f;
 const float specular_fac = 1.0f;
 const vec3 specular_color = vec3(1.0, 1.0, 1.0);
 const float shininess = 80.0f;

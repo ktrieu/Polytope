@@ -31,7 +31,7 @@ void World::load(ResourceLoader& loader) {
 	// generate a bunch of random cubes
 	std::random_device dev;
 	std::mt19937 rng(dev());
-	std::uniform_real_distribution<float> pos_dist(0.0, 20.0);
+	std::uniform_real_distribution<float> pos_dist(0.0, 10.0);
 	std::uniform_real_distribution<float> rot_dist(0.0, 360.0);
 	std::uniform_real_distribution<float> color_dist(0.0, 1.0);
 	for (int i = 0; i < 5; i++) {
@@ -42,19 +42,19 @@ void World::load(ResourceLoader& loader) {
 		);
 	}
 	m_lights.emplace_back(
-		glm::vec3(5.0f, 0.0f, 5.0f),
+		glm::vec3(1.0f, 0.0f, 1.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f),
-		10
+		5
 	);
 	m_lights.emplace_back(
-		glm::vec3(0.0f, 0.0f, 5.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
-		10
+		5
 	);
 	m_lights.emplace_back(
-		glm::vec3(5.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		10
+		5
 	);
 }
 
@@ -74,6 +74,12 @@ void World::update() {
 	}
 	else if (input.get_key_state(VirtualKey::RIGHT)) {
 		m_camera.move({ 1, 0, 0 });
+	}
+	else if (input.get_key_state(VirtualKey::UP)) {
+		m_camera.move({ 0, 1, 0 });
+	}
+	else if (input.get_key_state(VirtualKey::DOWN)) {
+		m_camera.move({ 0, -1, 0 });
 	}
 
 	m_camera.update();

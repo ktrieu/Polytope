@@ -10,7 +10,9 @@ enum class VirtualKey {
 	LEFT,
 	RIGHT,
 	BACK,
-	EXIT
+	EXIT,
+	UP,
+	DOWN,
 };
 
 static const std::unordered_map<VirtualKey, std::string> VIRTUAL_KEY_STRINGS{
@@ -19,7 +21,9 @@ static const std::unordered_map<VirtualKey, std::string> VIRTUAL_KEY_STRINGS{
 	{ VirtualKey::LEFT, "LEFT"},
 	{ VirtualKey::RIGHT, "RIGHT"},
 	{ VirtualKey::BACK, "BACK"},
-	{ VirtualKey::EXIT, "EXIT"}
+	{ VirtualKey::EXIT, "EXIT"},
+	{ VirtualKey::UP, "UP"},
+	{ VirtualKey::DOWN, "DOWN" },
 };
 
 static const std::string& virtual_key_to_key(VirtualKey key) {
@@ -32,6 +36,8 @@ static const std::unordered_map<int, VirtualKey> GLFW_KEY_VIRTUAL_KEYS{
 	{ GLFW_KEY_A, VirtualKey::LEFT },
 	{ GLFW_KEY_D, VirtualKey::RIGHT },
 	{ GLFW_KEY_S, VirtualKey::BACK },
+	{ GLFW_KEY_Q, VirtualKey::UP },
+	{ GLFW_KEY_E, VirtualKey::DOWN}
 };
 
 static const VirtualKey glfw_key_to_virtual_key(int key) {
