@@ -41,6 +41,10 @@ public:
 private:
 	GLuint init_vao();
 
+	void prepare_forward_shader(ShaderProgram& shader, Material& mat, glm::mat4& view, glm::mat4& proj);
+	void upload_light_uniforms(ShaderProgram& shader, Light& light, glm::mat4& view, int light_idx);
+	void execute_draw_call(ShaderProgram& shader, DrawCall& draw_call);
+
 	ResourceLoader& m_loader;
 
 	ShadowMap m_shadow_map;

@@ -62,6 +62,33 @@ void EntityRenderer::draw_light(const Light& light) {
 	m_lights.push_back(light);
 }
 
+void EntityRenderer::prepare_forward_shader(ShaderProgram& shader, Material& mat, glm::mat4& view, glm::mat4& proj) {
+	shader.use();
+	glBindTexture(GL_TEXTURE_2D, m_texture_ids[mat.texture_name]);
+	shader.uploadUniform(view, "view");
+	shader.uploadUniform(proj, "projection");
+	shader.uploadUniform(0, "tex_sampler");
+	shader.uploadUniform(static_cast<int>(m_lights.size()), "num_lights");
+}
+
+void EntityRenderer::upload_light_uniforms(ShaderProgram& shader, Light& light, glm::mat4& view, int light_idx) {
+	std::string light_struct_name = "lights[" + std::to_string(light_idx) + "]";
+	glm::vec3 light_pos_view_space = view * glm::vec4(light.pos, 1.0);
+	glm::vec3 light_dir_view_space = view * glm::vec4(light.dir, 0.0);
+	shader.uploadUniform(light_pos_view_space, light_struct_name + ".pos");
+	shader.uploadUniform(light.color, light_struct_name + ".color");
+	shader.uploadUniform(light_dir_view_space, light_struct_name + ".dir");
+	shader.uploadUniform(light.strength, light_struct_name + ".strength");
+	shader.uploadUniform(light.fov, light_struct_name + ".fov");
+}
+
+void EntityRenderer::execute_draw_call(ShaderProgram& shader, DrawCall& draw_call) {
+	glm::mat4 model = draw_call.transform;
+	shader.uploadUniform(model, "model");
+	glDrawElementsBaseVertex(GL_TRIANGLES, draw_call.offset.index_len, GL_UNSIGNED_SHORT,
+		(void*)(draw_call.offset.index_offset * sizeof(unsigned short)), draw_call.offset.base_vertex);
+}
+
 void EntityRenderer::render(Camera& camera) {
 	glBindVertexArray(m_vao);
 	glm::mat4 view = camera.get_view();
@@ -70,29 +97,14 @@ void EntityRenderer::render(Camera& camera) {
 	for (auto& material_draw_calls : m_draw_calls) {
 		Material& mat = m_loader.get_material(material_draw_calls.first);
 		ShaderProgram& shader = m_loader.get_shader(mat.shader_name);
-		shader.use();
-		glBindTexture(GL_TEXTURE_2D, m_texture_ids[mat.texture_name]);
-		shader.uploadUniform(view, "view");
-		shader.uploadUniform(proj, "projection");
-		shader.uploadUniform(0, "tex_sampler");
-		shader.uploadUniform(static_cast<int>(m_lights.size()), "num_lights");
+		prepare_forward_shader(shader, mat, view, proj);
 		for (int i = 0; i < m_lights.size(); i++) {
 			Light light = m_lights.at(i);
-			std::string light_struct_name = "lights[" + std::to_string(i) + "]";
-			glm::vec3 light_pos_view_space = view * glm::vec4(light.pos, 1.0);
-			glm::vec3 light_dir_view_space = view * glm::vec4(light.dir, 0.0);
-			shader.uploadUniform(light_pos_view_space, light_struct_name + ".pos");
-			shader.uploadUniform(light.color, light_struct_name + ".color");
-			shader.uploadUniform(light_dir_view_space, light_struct_name + ".dir");
-			shader.uploadUniform(light.strength, light_struct_name + ".strength");
-			shader.uploadUniform(light.fov, light_struct_name + ".fov");
+			upload_light_uniforms(shader, light, view, i);
 		}
 
 		for (auto& draw_call : material_draw_calls.second) {
-			glm::mat4 model = draw_call.transform;
-			shader.uploadUniform(model, "model");
-			glDrawElementsBaseVertex(GL_TRIANGLES, draw_call.offset.index_len, GL_UNSIGNED_SHORT,
-				(void*)(draw_call.offset.index_offset * sizeof(unsigned short)), draw_call.offset.base_vertex);
+			execute_draw_call(shader, draw_call);
 		}
 
 		shader.unuse();
