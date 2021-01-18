@@ -20,15 +20,37 @@
 
 namespace fs = std::filesystem;
 
-fs::path get_output_path(const fs::path& output_dir, const fs::path& name) {
-	fs::path out = output_dir / name;
-	if (out.extension().string() == std::string(".blend")) {
-		return out.replace_extension(".mdl");
+enum class FileType {
+	MODEL,
+	TEXTURE,
+	MATERIAL,
+	MISC
+};
+
+FileType file_type_from_extension(const std::string& ext) {
+	if (ext.compare(".blend") == 0 || ext.compare(".fbx") == 0) {
+		return FileType::MODEL;
 	}
-	if (out.extension().string() == std::string(".png")) {
-		return out.replace_extension(".tex");
+	else if (ext.compare(".png") == 0 || ext.compare(".jpg") == 0) {
+		return FileType::TEXTURE;
+	}
+	else if (ext.compare(".pmat") == 0) {
+		return FileType::MATERIAL;
 	}
 	else {
+		return FileType::MISC;
+	}
+}
+
+fs::path get_output_path(const fs::path& output_dir, const fs::path& name) {
+	fs::path out = output_dir / name;
+	FileType file_type = file_type_from_extension(out.extension().string());
+	switch (file_type) {
+	case FileType::MODEL:
+		return out.replace_extension(".mdl");
+	case FileType::TEXTURE:
+		return out.replace_extension(".tex");
+	default:
 		return out;
 	}
 }
@@ -104,17 +126,20 @@ void process_misc(const fs::path& in, const fs::path& out) {
 void process(const fs::path& in, const fs::path& out, const std::string& name) {
 	//if the output path doesn't exist, create it
 	fs::create_directories(fs::path(out).remove_filename());
-	if (in.extension().string() == std::string(".blend")) {
+	FileType file_type = file_type_from_extension(in.extension().string());
+	switch (file_type) {
+	case FileType::MODEL:
 		process_mdl(in, out, name);
-	}
-	else if (in.extension().string() == std::string(".pmat")) {
+		break;
+	case FileType::MATERIAL:
 		process_mat(in, out, name);
-	}
-	else if (in.extension().string() == std::string(".png")) {
+		break;
+	case FileType::TEXTURE:
 		process_texture(in, out, name);
-	}
-	else {
+		break;
+	case FileType::MISC:
 		process_misc(in, out);
+		break;
 	}
 }
 
