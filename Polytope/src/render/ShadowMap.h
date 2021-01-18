@@ -11,6 +11,9 @@ public:
 	ShadowMap(ResourceLoader& loader);
 	~ShadowMap() {}
 
+	int get_max_shadow_maps() { return MAX_SHADOW_MAPS; }
+	ShaderProgram& get_shader();
+
 	void start_shadow_render();
 	void use_shadow_map(int idx);
 	void finish_shadow_render();

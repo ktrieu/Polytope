@@ -1,6 +1,7 @@
 #include "ShadowMap.h"
 
 #include <resource/ResourceLoader.h>
+#include <stdexcept>
 
 ShadowMap::ShadowMap(ResourceLoader& loader) : m_loader(loader) {
 	glGenFramebuffers(1, &m_fbo);
@@ -26,6 +27,15 @@ ShadowMap::ShadowMap(ResourceLoader& loader) : m_loader(loader) {
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 }
 
+ShaderProgram& ShadowMap::get_shader() {
+	if (m_shader == nullptr) {
+		throw std::runtime_error("No shader attached. Call start_shadow_render first.");
+	}
+	else {
+		return *m_shader;
+	}
+}
+
 void ShadowMap::start_shadow_render() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	glDrawBuffer(GL_NONE);
@@ -47,6 +57,8 @@ void ShadowMap::use_shadow_map(int idx) {
 void ShadowMap::finish_shadow_render() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// HACK: we really should fetch the screen size from the App class
+	glViewport(0, 0, 720, 480);
 	m_shader->unuse();
 	m_shader = nullptr;
 }

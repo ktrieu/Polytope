@@ -62,6 +62,37 @@ void EntityRenderer::draw_light(const Light& light) {
 	m_lights.push_back(light);
 }
 
+void EntityRenderer::render_shadow_maps() {
+	m_shadow_map.start_shadow_render();
+
+	ShaderProgram& shader = m_shadow_map.get_shader();
+	for (int i = 0; i < m_lights.size(); i++) {
+		if (i >= m_shadow_map.get_max_shadow_maps()) {
+			// if there are more lights than the maximum shadow maps, just skip the remaining ones
+			break;
+		}
+
+		m_shadow_map.use_shadow_map(i);
+
+		Light& light = m_lights.at(i);
+		glm::mat4 view = glm::lookAt(light.pos, light.pos + light.dir, glm::vec3(0.0f, 1.0f, 0.0f));
+		// all our shadow maps are square, so just use 1 for the aspect ratio
+		glm::mat4 proj = glm::perspective(light.fov, 1.0f, 0.01f, 100.0f);
+
+		shader.uploadUniform(view, "view");
+		shader.uploadUniform(proj, "projection");
+
+		for (auto& entry : m_draw_calls) {
+			for (auto& draw_call : entry.second) {
+				execute_draw_call(shader, draw_call);
+			}
+		}
+
+
+	}
+	m_shadow_map.finish_shadow_render();
+}
+
 void EntityRenderer::prepare_forward_shader(ShaderProgram& shader, Material& mat, glm::mat4& view, glm::mat4& proj) {
 	shader.use();
 	glBindTexture(GL_TEXTURE_2D, m_texture_ids[mat.texture_name]);
@@ -91,6 +122,9 @@ void EntityRenderer::execute_draw_call(ShaderProgram& shader, DrawCall& draw_cal
 
 void EntityRenderer::render(Camera& camera) {
 	glBindVertexArray(m_vao);
+
+	render_shadow_maps();
+
 	glm::mat4 view = camera.get_view();
 	glm::mat4 proj = camera.get_proj();
 
