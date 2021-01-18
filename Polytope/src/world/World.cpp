@@ -13,38 +13,49 @@ World::~World() {
 }
 
 void World::load(ResourceLoader& loader) {
-	loader.load_from_subdirectory("mesh/");
 	loader.load_from_subdirectory("shader/");
-	loader.load_from_subdirectory("texture/");
-	loader.load_from_subdirectory("material/");
-	Mesh& wall = loader.get_mesh("mesh/wall");
-	std::vector<Mesh> meshes = { wall };
+	loader.load_from_subdirectory("arena_scene/");
+	Mesh& arena = loader.get_mesh("arena_scene/arena/arena");
+	Mesh& cube = loader.get_mesh("arena_scene/cube/cube");
+	std::vector<Mesh> meshes = { arena, cube };
 	m_renderer.upload_meshes(meshes);
-	Texture& marble = loader.get_texture("texture/marble");
-	std::vector<Texture> textures = { marble };
+	Texture& arena_tex = loader.get_texture("arena_scene/arena/marble");
+	Texture& cube_tex = loader.get_texture("arena_scene/cube/brick");
+	std::vector<Texture> textures = { arena_tex, cube_tex };
 	m_renderer.upload_textures(textures);
-	// generate a bunch of random entities
+	m_entities.emplace_back(
+		"arena_scene/arena/arena",
+		"arena_scene/arena/arena",
+		glm::vec3(0.0f, 0.0f, 0.0f)
+	);
+	// generate a bunch of random cubes
 	std::random_device dev;
 	std::mt19937 rng(dev());
 	std::uniform_real_distribution<float> pos_dist(0.0, 20.0);
 	std::uniform_real_distribution<float> rot_dist(0.0, 360.0);
 	std::uniform_real_distribution<float> color_dist(0.0, 1.0);
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 5; i++) {
 		m_entities.emplace_back(
-			"mesh/wall", 
-			"material/test", 
-			glm::vec3(pos_dist(rng), pos_dist(rng), pos_dist(rng)), 
-			glm::vec3(rot_dist(rng), rot_dist(rng), rot_dist(rng))
+			"arena_scene/cube/cube", 
+			"arena_scene/cube/cube", 
+			glm::vec3(pos_dist(rng), 0, pos_dist(rng))
 		);
 	}
-	// and a bunch of random lights
-	for (int i = 0; i < 20; i++) {
-		m_lights.emplace_back(
-			glm::vec3(pos_dist(rng), pos_dist(rng), pos_dist(rng)),
-			glm::vec3(color_dist(rng), color_dist(rng), color_dist(rng)),
-			3
-		);
-	}
+	m_lights.emplace_back(
+		glm::vec3(5.0f, 0.0f, 5.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		10
+	);
+	m_lights.emplace_back(
+		glm::vec3(0.0f, 0.0f, 5.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		10
+	);
+	m_lights.emplace_back(
+		glm::vec3(5.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		10
+	);
 }
 
 void World::update() {

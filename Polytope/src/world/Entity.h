@@ -9,7 +9,11 @@ class EntityRenderer;
 class Entity {
 
 public:
-	Entity(const std::string& mesh_name, const std::string& material_name, glm::vec3 pos, glm::vec3 rot);
+	Entity(
+		const std::string& mesh_name, 
+		const std::string& material_name,
+		glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3 rot = glm::vec3(0.0f, 0.0f, 0.0f));
 	~Entity();
 
 	const std::string& get_mesh() const { return m_mesh; }
