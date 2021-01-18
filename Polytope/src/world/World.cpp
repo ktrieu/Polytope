@@ -42,18 +42,24 @@ void World::load(ResourceLoader& loader) {
 		);
 	}
 	m_lights.emplace_back(
-		glm::vec3(1.0f, 0.0f, 1.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		60,
 		5
 	);
 	m_lights.emplace_back(
-		glm::vec3(0.0f, 0.0f, 1.0f),
-		glm::vec3(1.0f, 0.0f, 0.0f),
-		5
-	);
-	m_lights.emplace_back(
-		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(-0.500f, 0.0f, 0.866f),
 		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(-0.500f, 0.0f, 0.866f),
+		60,
+		5
+	);
+	m_lights.emplace_back(
+		glm::vec3(-0.500f, 0.0f, -0.866f),
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(-0.500f, 0.0f, -0.866f),
+		60,
 		5
 	);
 }

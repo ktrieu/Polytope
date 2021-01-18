@@ -80,9 +80,12 @@ void EntityRenderer::render(Camera& camera, ResourceLoader& loader) {
 			Light light = m_lights.at(i);
 			std::string light_struct_name = "lights[" + std::to_string(i) + "]";
 			glm::vec3 light_pos_view_space = view * glm::vec4(light.pos, 1.0);
+			glm::vec3 light_dir_view_space = view * glm::vec4(light.dir, 0.0);
 			shader.uploadUniform(light_pos_view_space, light_struct_name + ".pos");
 			shader.uploadUniform(light.color, light_struct_name + ".color");
+			shader.uploadUniform(light_dir_view_space, light_struct_name + ".dir");
 			shader.uploadUniform(light.strength, light_struct_name + ".strength");
+			shader.uploadUniform(light.fov, light_struct_name + ".fov");
 		}
 
 		for (auto& draw_call : material_draw_calls.second) {
