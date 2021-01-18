@@ -21,7 +21,7 @@ Entity::Entity(
 Entity::~Entity() {
 }
 
-void Entity::update() {
+void Entity::update(double dt) {
 }
 
 void Entity::render(EntityRenderer& renderer) {

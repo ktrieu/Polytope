@@ -20,7 +20,7 @@ public:
 	const std::string& get_material() const { return m_material; }
 	glm::mat4 get_transform() const { return m_transform; }
 
-	void update();
+	void update(double dt);
 	void render(EntityRenderer& renderer);
 
 private:

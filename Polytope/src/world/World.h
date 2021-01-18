@@ -18,7 +18,7 @@ public:
 
 	void load(ResourceLoader& loader);
 
-	void update();
+	void update(double dt);
 	void render(ResourceLoader& loader);
 
 private:

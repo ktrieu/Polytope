@@ -58,7 +58,7 @@ void World::load(ResourceLoader& loader) {
 	);
 }
 
-void World::update() {
+void World::update(double dt) {
 	auto input = m_app.get_input_manager();
 	auto mouse_delta = input.get_mouse_delta();
 	m_camera.look(mouse_delta);
@@ -85,7 +85,7 @@ void World::update() {
 	m_camera.update();
 
 	for (Entity& entity : m_entities) {
-		entity.update();
+		entity.update(dt);
 	}
 }
 

@@ -74,7 +74,7 @@ void App::start() {
 			glfwSetWindowShouldClose(m_wnd, true);
 		}
 
-		world.update();
+		world.update(delta.count());
 		world.render(m_resource_loader);
 		glfwPollEvents();
 		glfwSwapBuffers(m_wnd);
