@@ -43,21 +43,21 @@ void World::load() {
 		glm::vec3(0.0f, 0.0f, 1.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		60,
-		5
+		15
 	);
 	m_lights.emplace_back(
 		glm::vec3(-0.500f, 0.0f, 0.866f),
 		glm::vec3(0.0f, 1.0f, 0.0f),
 		glm::vec3(-0.500f, 0.0f, 0.866f),
 		60,
-		5
+		15
 	);
 	m_lights.emplace_back(
 		glm::vec3(-0.500f, 0.0f, -0.866f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(-0.500f, 0.0f, -0.866f),
 		60,
-		5
+		15
 	);
 	m_lights.emplace_back(
 		glm::vec3(0.0f, 3.0f, 0.0f),

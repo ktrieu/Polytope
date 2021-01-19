@@ -63,7 +63,7 @@ void ShadowMap::finish_shadow_render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// HACK: we really should fetch the screen size from the App class
 	glDisable(GL_CULL_FACE);
-	glViewport(0, 0, 720, 480);
+	glViewport(0, 0, 1080, 720);
 	m_shader->unuse();
 	m_shader = nullptr;
 }

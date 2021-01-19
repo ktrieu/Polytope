@@ -23,8 +23,8 @@ private:
 	bool init_GLFW();
 
 
-	int m_width = 720;
-	int m_height = 480;
+	int m_width = 1080;
+	int m_height = 720;
 	GLFWwindow* m_wnd = nullptr;
 
 	InputManager m_input_manager;

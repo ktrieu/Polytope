@@ -59,7 +59,7 @@ void Camera::clamp_angles() {
 
 void Camera::recalculate_matrices() {
 	//setup a default projection matrix, we'll handle screen sizes and such later
-	m_proj = glm::perspective(glm::radians(60.0f), 720.0f / 480.0f, 0.01f, 100.0f);
+	m_proj = glm::perspective(glm::radians(60.0f), 1080.0f / 720.0f, 0.01f, 100.0f);
 	m_view = glm::mat4(1.0);
 	m_view = glm::rotate(m_view, glm::radians(m_pitch), glm::vec3(1, 0, 0));
 	m_view = glm::rotate(m_view, glm::radians(m_yaw), glm::vec3(0, 1, 0));

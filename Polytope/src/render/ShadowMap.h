@@ -23,7 +23,7 @@ private:
 	ResourceLoader& m_loader;
 	ShaderProgram* m_shader = nullptr;
 
-	const int SHADOW_MAP_SIZE = 1024;
+	const int SHADOW_MAP_SIZE = 2048;
 	const int MAX_SHADOW_MAPS = 5;
 
 	GLuint m_fbo = 0;
