@@ -1,6 +1,6 @@
 # Polytope
 
-This is my graphics learning project. Currently supports a mouselook based camera, colored direction lighting, and shadow mapping.
+This is my graphics learning project. Currently supports a mouselook based camera, colored directional lighting, and shadow mapping. It also contains a resource system, which preprocesses model files (with `assimp`) and images (with `stb_image`).
 
 ## Setup
 
