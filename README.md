@@ -2,6 +2,8 @@
 
 This is my graphics learning project. Currently supports a mouselook based camera, colored directional lighting, and shadow mapping. It also contains a resource system, which preprocesses model files (with `assimp`) and images (with `stb_image`).
 
+![](polytope.gif)
+
 ## Setup
 
 Polytope is actually two projects, **Polytope**, under `Polytope/` and **PolytopeTools**, under `PolytopeTools/`.
