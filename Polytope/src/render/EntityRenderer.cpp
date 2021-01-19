@@ -92,10 +92,14 @@ void EntityRenderer::render_shadow_maps() {
 
 void EntityRenderer::prepare_forward_shader(ShaderProgram& shader, Material& mat, glm::mat4& view, glm::mat4& proj) {
 	shader.use();
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture_ids[mat.texture_name]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, m_shadow_map.get_texture());
 	shader.uploadUniform(view, "view");
 	shader.uploadUniform(proj, "projection");
 	shader.uploadUniform(0, "tex_sampler");
+	shader.uploadUniform(1, "shadow_maps");
 	shader.uploadUniform(static_cast<int>(m_lights.size()), "num_lights");
 }
 
@@ -108,6 +112,8 @@ void EntityRenderer::upload_light_uniforms(ShaderProgram& shader, Light& light, 
 	shader.uploadUniform(light_dir_view_space, light_struct_name + ".dir");
 	shader.uploadUniform(light.strength, light_struct_name + ".strength");
 	shader.uploadUniform(light.fov, light_struct_name + ".fov");
+	shader.uploadUniform(light.get_view(), light_struct_name + ".view");
+	shader.uploadUniform(light.get_proj(), light_struct_name + ".proj");
 }
 
 void EntityRenderer::execute_draw_call(ShaderProgram& shader, DrawCall& draw_call) {

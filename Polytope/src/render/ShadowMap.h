@@ -12,6 +12,7 @@ public:
 	~ShadowMap() {}
 
 	int get_max_shadow_maps() { return MAX_SHADOW_MAPS; }
+	GLuint get_texture() { return m_texture; }
 	ShaderProgram& get_shader();
 
 	void start_shadow_render();

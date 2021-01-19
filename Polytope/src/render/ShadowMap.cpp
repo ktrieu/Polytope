@@ -22,8 +22,10 @@ ShadowMap::ShadowMap(ResourceLoader& loader) : m_loader(loader) {
 	);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	float border[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 }
 
@@ -40,6 +42,8 @@ void ShadowMap::start_shadow_render() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 	glViewport(0, 0, SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
 	m_shader = &m_loader.get_shader("shader/shadow");
 	m_shader->use();
@@ -58,6 +62,7 @@ void ShadowMap::finish_shadow_render() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// HACK: we really should fetch the screen size from the App class
+	glDisable(GL_CULL_FACE);
 	glViewport(0, 0, 720, 480);
 	m_shader->unuse();
 	m_shader = nullptr;
