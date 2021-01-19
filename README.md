@@ -1,5 +1,9 @@
 # Polytope
 
+This is my graphics learning project. Currently supports a mouselook based camera, colored direction lighting, and shadow mapping.
+
+## Setup
+
 Polytope is actually two projects, **Polytope**, under `Polytope/` and **PolytopeTools**, under `PolytopeTools/`.
 
 ### Dependencies
