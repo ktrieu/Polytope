@@ -89,7 +89,7 @@ void main() {
 
 		vec3 ambient_color = ambient_fac * texture_color;
 		vec3 diffuse_color = is_in_light_dir * shadow * diffuse * light_color * texture_color;
-		vec3 specular_color = is_in_light_dir * shadow * specular * light_color * specular_color * 0;
+		vec3 specular_color = is_in_light_dir * shadow * specular * light_color * specular_color;
 
 		final_color += vec3(
 			ambient_color + diffuse_color + specular_color
