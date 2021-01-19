@@ -35,9 +35,9 @@ float get_diffuse(vec3 n, vec3 to_light) {
 	return max(dot(n, to_light), 0.0);
 }
 
-float get_specular(vec3 n, vec3 to_light, float shininess) {
+float get_specular(vec3 pos, vec3 n, vec3 to_light, float shininess) {
 	vec3 light_reflected = reflect(-to_light, n);
-	float spec_angle = max(dot(light_reflected, normalize(-pos)), 0.0);
+	float spec_angle = max(dot(normalize(-pos), light_reflected), 0.0);
 	return pow(spec_angle, shininess);
 }
 
@@ -61,7 +61,7 @@ float get_shadow(vec3 light_space_pos, vec3 n, vec3 to_light, int light_idx) {
 	float light_depth = light_space_pos.z;
 
 	float bias = max(SHADOW_BIAS_MAX * (1.0 - dot(n, to_light)), SHADOW_BIAS_MIN);  
-	float shadow = (light_depth - bias) > shadow_map_depth ? 1.0 : 0.0;
+	float shadow = (light_depth) > shadow_map_depth ? 1.0 : 0.0;
 
 	return 1.0f - shadow;
 }
@@ -78,7 +78,7 @@ void main() {
 		vec3 to_light = normalize(light.pos - pos);
 
 		float diffuse = get_diffuse(n, to_light);
-		float specular = get_specular(n, to_light, shininess);
+		float specular = get_specular(pos, n, to_light, shininess);
 
 		vec3 light_space_pos = get_light_space_pos(world_pos, i);
 		float shadow = get_shadow(light_space_pos, n, to_light, i);
@@ -89,7 +89,7 @@ void main() {
 
 		vec3 ambient_color = ambient_fac * texture_color;
 		vec3 diffuse_color = is_in_light_dir * shadow * diffuse * light_color * texture_color;
-		vec3 specular_color = is_in_light_dir * shadow * specular * light_color * specular_color;
+		vec3 specular_color = is_in_light_dir * shadow * specular * light_color * specular_color * 0;
 
 		final_color += vec3(
 			ambient_color + diffuse_color + specular_color
