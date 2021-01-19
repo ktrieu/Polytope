@@ -27,7 +27,7 @@ uniform sampler2DArray shadow_maps;
 
 out vec4 color;
 
-const float ambient_fac = 0.01f;
+const float ambient_fac = 0.1f;
 const vec3 specular_color = vec3(1.0, 1.0, 1.0);
 const float shininess = 80.0f;
 
@@ -53,15 +53,15 @@ vec3 get_light_space_pos(vec3 world_pos, int light_idx) {
 	return (pos_homogenous.xyz / pos_homogenous.w) * 0.5 + 0.5;
 }
 
-const float SHADOW_BIAS_MAX = 0.01;
-const float SHADOW_BIAS_MIN = 0.005;
+const float SHADOW_BIAS_MAX = 0.001;
+const float SHADOW_BIAS_MIN = 0.00005;
 
 float get_shadow(vec3 light_space_pos, vec3 n, vec3 to_light, int light_idx) {
 	float shadow_map_depth = texture(shadow_maps, vec3(light_space_pos.xy, light_idx)).x;
 	float light_depth = light_space_pos.z;
 
 	float bias = max(SHADOW_BIAS_MAX * (1.0 - dot(n, to_light)), SHADOW_BIAS_MIN);  
-	float shadow = (light_depth) > shadow_map_depth ? 1.0 : 0.0;
+	float shadow = (light_depth - bias) > shadow_map_depth ? 1.0 : 0.0;
 
 	return 1.0f - shadow;
 }
