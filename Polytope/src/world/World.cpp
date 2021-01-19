@@ -30,17 +30,12 @@ void World::load() {
 		"arena_scene/arena/arena",
 		glm::vec3(0.0f, 0.0f, 0.0f)
 	);
-	// generate a bunch of random cubes
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	std::uniform_real_distribution<float> pos_dist(0.0, 10.0);
-	std::uniform_real_distribution<float> rot_dist(0.0, 360.0);
-	std::uniform_real_distribution<float> color_dist(0.0, 1.0);
 	for (int i = 0; i < 5; i++) {
+		float degrees = i * (360.0f / 5.0f);
 		m_entities.emplace_back(
-			"arena_scene/cube/cube", 
-			"arena_scene/cube/cube", 
-			glm::vec3(pos_dist(rng), 0, pos_dist(rng))
+			"arena_scene/cube/cube",
+			"arena_scene/cube/cube",
+			glm::vec3(5 * std::sin(glm::radians(degrees)), 0.0f, 5 * std::cos(glm::radians(degrees)))
 		);
 	}
 	m_lights.emplace_back(
@@ -63,6 +58,13 @@ void World::load() {
 		glm::vec3(-0.500f, 0.0f, -0.866f),
 		60,
 		5
+	);
+	m_lights.emplace_back(
+		glm::vec3(0.0f, 3.0f, 0.0f),
+		glm::vec3(1.0f, 1.0f, 1.0f),
+		glm::vec3(0.0f, -1.0f, 0.0f),
+		60,
+		1
 	);
 }
 
